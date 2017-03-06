@@ -8,7 +8,7 @@ using KnerdyKnitter.Models;
 namespace KnerdyKnitter.Migrations
 {
     [DbContext(typeof(KnerdyKnitterContext))]
-    [Migration("20170306184227_Initial")]
+    [Migration("20170306224029_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -219,13 +219,13 @@ namespace KnerdyKnitter.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ApplicationUserId");
-
                     b.Property<DateTime>("SignUpDate");
+
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Knitters");
                 });
@@ -440,9 +440,9 @@ namespace KnerdyKnitter.Migrations
 
             modelBuilder.Entity("KnerdyKnitter.Models.Knitter", b =>
                 {
-                    b.HasOne("KnerdyKnitter.Models.ApplicationUser", "ApplicationUser")
+                    b.HasOne("KnerdyKnitter.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>

@@ -218,13 +218,13 @@ namespace KnerdyKnitter.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ApplicationUserId");
-
                     b.Property<DateTime>("SignUpDate");
+
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Id");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Knitters");
                 });
@@ -439,9 +439,9 @@ namespace KnerdyKnitter.Migrations
 
             modelBuilder.Entity("KnerdyKnitter.Models.Knitter", b =>
                 {
-                    b.HasOne("KnerdyKnitter.Models.ApplicationUser", "ApplicationUser")
+                    b.HasOne("KnerdyKnitter.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>

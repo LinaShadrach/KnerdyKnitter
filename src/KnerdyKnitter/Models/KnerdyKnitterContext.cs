@@ -49,6 +49,8 @@ namespace KnerdyKnitter.Models
                 .HasOne(c => c.Following)
                 .WithMany(r => r.Followings)
                 .HasForeignKey(c => c.FollowingId);
+            modelBuilder.Entity<Knitter>()
+                .HasKey(k => k.Id);
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -81,15 +81,15 @@ namespace KnerdyKnitter.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ApplicationUserId = table.Column<string>(nullable: true),
-                    SignUpDate = table.Column<DateTime>(nullable: false)
+                    SignUpDate = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Knitters", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Knitters_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
+                        name: "FK_Knitters_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -198,7 +198,7 @@ namespace KnerdyKnitter.Migrations
                         column: x => x.FollowerId,
                         principalTable: "Knitters",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Follows_Knitters_FollowingId",
                         column: x => x.FollowingId,
@@ -456,9 +456,9 @@ namespace KnerdyKnitter.Migrations
                 column: "TagId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Knitters_ApplicationUserId",
+                name: "IX_Knitters_UserId",
                 table: "Knitters",
-                column: "ApplicationUserId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",

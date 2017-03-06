@@ -31,16 +31,16 @@ namespace KnerdyKnitter.Controllers
 
         public IActionResult Index()
         {
-            if (User.Identity.IsAuthenticated)
-            { 
-                string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                var thisWorker = db.Knitters.FirstOrDefault(knitter => knitter.ApplicationUserId == userId);
-                return View(thisWorker);
-            }
-            else
-            {
+            //if (User.Identity.IsAuthenticated)
+            //{ 
+            //    string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            //    var thisKnitter = db.Knitters.FirstOrDefault(knitter => knitter.ApplicationUserId == userId);
+            //    return View(thisKnitter);
+            //}
+            //else
+            //{
                 return View();
-            }
+            //}
         }
 
         public IActionResult Register()
@@ -56,9 +56,6 @@ namespace KnerdyKnitter.Controllers
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                //Knitter newKnitter = new Knitter();
-                //newKnitter.SignUpDate = DateTime.Now;
-
                 return await RegisterLogin(user, model.Password);
             }
             else
@@ -74,7 +71,10 @@ namespace KnerdyKnitter.Controllers
             Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(user.UserName, password, isPersistent: true, lockoutOnFailure: false);
             if (result.Succeeded)
             {
-
+                Knitter newKnitter = new Knitter();
+                newKnitter.SignUpDate = DateTime.Now;
+                newKnitter.UserId = user.Id;
+                newKnitter.Save(newKnitter);
                 return RedirectToAction("Index", "Account");
             }
             else
@@ -82,7 +82,6 @@ namespace KnerdyKnitter.Controllers
                 return RedirectToAction("Login");
             }
         }
-
         public IActionResult Login()
         {
             return View();
@@ -94,7 +93,7 @@ namespace KnerdyKnitter.Controllers
             Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: true, lockoutOnFailure: false);
             if (result.Succeeded)
             {
-                string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
                 return RedirectToAction("Index", "Home");
             }
             else
