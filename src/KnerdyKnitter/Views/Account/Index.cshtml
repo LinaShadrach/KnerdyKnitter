@@ -1,5 +1,21 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿
+@using System.Security.Claims
+
+<h2>Knerdy Knitter</h2>
+<hr />
+@if (User.Identity.IsAuthenticated)
+{
+    <h4>Hello @User.Identity.Name!</h4>
+}
+else
+{
+    @Html.Partial("Login")
+    @Html.Partial("Register")
+}
+@if (User.Identity.IsAuthenticated)
+{
+    @using (Html.BeginForm("LogOff", "Account"))
+    {
+        <input type="submit" value="Log out" />
+    }
 }
