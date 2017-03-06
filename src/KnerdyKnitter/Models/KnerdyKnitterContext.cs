@@ -31,9 +31,25 @@ namespace KnerdyKnitter.Models
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(builder);
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Receiver)
+                .WithMany(r => r.ReceivedComments)
+                .HasForeignKey(c => c.ReceiverId);
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Sender)
+                .WithMany(r => r.SentComments)
+                .HasForeignKey(c => c.SenderId);
+            modelBuilder.Entity<Follow>()
+                .HasOne(c => c.Follower)
+                .WithMany(r => r.Followers)
+                .HasForeignKey(c => c.FollowerId);
+            modelBuilder.Entity<Follow>()
+                .HasOne(c => c.Following)
+                .WithMany(r => r.Followings)
+                .HasForeignKey(c => c.FollowingId);
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

@@ -1,5 +1,5 @@
---temp-output:c:\users\epicodus\documents\visual studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\obj\Debug\netcoreapp1.0\
---out:c:\users\epicodus\documents\visual studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\bin\Debug\netcoreapp1.0\KnerdyKnitter.dll
+--temp-output:C:\Users\epicodus\Documents\Visual Studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\obj\Debug\netcoreapp1.0\
+--out:C:\Users\epicodus\Documents\Visual Studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\bin\Debug\netcoreapp1.0\KnerdyKnitter.dll
 --define:DEBUG
 --define:TRACE
 --define:NETCOREAPP1_0
@@ -62,10 +62,14 @@
 --reference:C:\Users\epicodus\.nuget\packages\Microsoft.CSharp\4.0.1\ref\netstandard1.0\Microsoft.CSharp.dll
 --reference:C:\Users\epicodus\.nuget\packages\Microsoft.DotNet.InternalAbstractions\1.0.0\lib\netstandard1.3\Microsoft.DotNet.InternalAbstractions.dll
 --reference:C:\Users\epicodus\.nuget\packages\Microsoft.EntityFrameworkCore\1.0.1\lib\netstandard1.3\Microsoft.EntityFrameworkCore.dll
+--reference:C:\Users\epicodus\.nuget\packages\Microsoft.EntityFrameworkCore.Design\1.0.0-preview2-final\lib\netcoreapp1.0\Microsoft.EntityFrameworkCore.Design.dll
+--reference:C:\Users\epicodus\.nuget\packages\Microsoft.EntityFrameworkCore.Design.Core\1.0.0-preview2-final\lib\netstandard1.3\Microsoft.EntityFrameworkCore.Design.Core.dll
 --reference:C:\Users\epicodus\.nuget\packages\Microsoft.EntityFrameworkCore.Relational\1.0.1\lib\netstandard1.3\Microsoft.EntityFrameworkCore.Relational.dll
+--reference:C:\Users\epicodus\.nuget\packages\Microsoft.EntityFrameworkCore.Relational.Design\1.0.0\lib\netstandard1.3\Microsoft.EntityFrameworkCore.Relational.Design.dll
 --reference:C:\Users\epicodus\.nuget\packages\Microsoft.EntityFrameworkCore.SqlServer\1.0.1\lib\netstandard1.3\Microsoft.EntityFrameworkCore.SqlServer.dll
 --reference:C:\Users\epicodus\.nuget\packages\Microsoft.Extensions.Caching.Abstractions\1.0.0\lib\netstandard1.0\Microsoft.Extensions.Caching.Abstractions.dll
 --reference:C:\Users\epicodus\.nuget\packages\Microsoft.Extensions.Caching.Memory\1.0.0\lib\netstandard1.3\Microsoft.Extensions.Caching.Memory.dll
+--reference:C:\Users\epicodus\.nuget\packages\Microsoft.Extensions.CommandLineUtils\1.0.0\lib\netstandard1.3\Microsoft.Extensions.CommandLineUtils.dll
 --reference:C:\Users\epicodus\.nuget\packages\Microsoft.Extensions.Configuration\1.0.0\lib\netstandard1.1\Microsoft.Extensions.Configuration.dll
 --reference:C:\Users\epicodus\.nuget\packages\Microsoft.Extensions.Configuration.Abstractions\1.0.0\lib\netstandard1.0\Microsoft.Extensions.Configuration.Abstractions.dll
 --reference:C:\Users\epicodus\.nuget\packages\Microsoft.Extensions.Configuration.EnvironmentVariables\1.0.0\lib\netstandard1.3\Microsoft.Extensions.Configuration.EnvironmentVariables.dll
@@ -187,17 +191,21 @@
 --reference:C:\Users\epicodus\.nuget\packages\System.Xml.ReaderWriter\4.3.0\ref\netstandard1.3\System.Xml.ReaderWriter.dll
 --reference:C:\Users\epicodus\.nuget\packages\System.Xml.XDocument\4.3.0\ref\netstandard1.3\System.Xml.XDocument.dll
 --reference:C:\Users\epicodus\.nuget\packages\System.Xml.XmlSerializer\4.0.11\ref\netstandard1.3\System.Xml.XmlSerializer.dll
---resource:"c:\users\epicodus\documents\visual studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\obj\Debug\netcoreapp1.0\KnerdyKnitterdotnet-compile.deps.json",KnerdyKnitter.deps.json
-c:\users\epicodus\documents\visual studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Program.cs
-c:\users\epicodus\documents\visual studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Startup.cs
-c:\users\epicodus\documents\visual studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Controllers\AccountController.cs
-c:\users\epicodus\documents\visual studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Models\Alters.cs
-c:\users\epicodus\documents\visual studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Models\ApplicationUser.cs
-c:\users\epicodus\documents\visual studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Models\Comment.cs
-c:\users\epicodus\documents\visual studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Models\Favorite.cs
-c:\users\epicodus\documents\visual studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Models\Follow.cs
-c:\users\epicodus\documents\visual studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Models\Garment.cs
-c:\users\epicodus\documents\visual studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Models\GarmentTag.cs
-c:\users\epicodus\documents\visual studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Models\KnerdyKnitterContext.cs
-c:\users\epicodus\documents\visual studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Models\Knitter.cs
-c:\users\epicodus\documents\visual studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Models\Tag.cs
+--resource:"C:\Users\epicodus\Documents\Visual Studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\obj\Debug\netcoreapp1.0\KnerdyKnitterdotnet-compile.deps.json",KnerdyKnitter.deps.json
+C:\Users\epicodus\Documents\Visual Studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Program.cs
+C:\Users\epicodus\Documents\Visual Studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Startup.cs
+C:\Users\epicodus\Documents\Visual Studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Controllers\AccountController.cs
+C:\Users\epicodus\Documents\Visual Studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Migrations\20170306184227_Initial.cs
+C:\Users\epicodus\Documents\Visual Studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Migrations\20170306184227_Initial.Designer.cs
+C:\Users\epicodus\Documents\Visual Studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Migrations\KnerdyKnitterContextModelSnapshot.cs
+C:\Users\epicodus\Documents\Visual Studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Models\Alters.cs
+C:\Users\epicodus\Documents\Visual Studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Models\ApplicationUser.cs
+C:\Users\epicodus\Documents\Visual Studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Models\Color.cs
+C:\Users\epicodus\Documents\Visual Studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Models\Comment.cs
+C:\Users\epicodus\Documents\Visual Studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Models\Favorite.cs
+C:\Users\epicodus\Documents\Visual Studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Models\Follow.cs
+C:\Users\epicodus\Documents\Visual Studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Models\Garment.cs
+C:\Users\epicodus\Documents\Visual Studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Models\GarmentTag.cs
+C:\Users\epicodus\Documents\Visual Studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Models\KnerdyKnitterContext.cs
+C:\Users\epicodus\Documents\Visual Studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Models\Knitter.cs
+C:\Users\epicodus\Documents\Visual Studio 2015\Projects\KnerdyKnitter\src\KnerdyKnitter\Models\Tag.cs
