@@ -1,0 +1,13 @@
+﻿@model KnerdyKnitter.Models.Garment
+
+
+@using (Html.BeginForm())
+{
+    <label asp-for="ColDim">Number of Stitches</label>
+    @Html.TextBoxFor(model => model.ColDim, new { @Value = Model.ColDim })
+    <label asp-for="RowDim">Number of Rows</label>
+    @Html.TextBoxFor(model => model.RowDim)
+    <label asp-for="Rule">Rule: </label>
+    @Html.TextBoxFor(model => model.Rule)
+    <input type="submit" value="Save changes" />
+}

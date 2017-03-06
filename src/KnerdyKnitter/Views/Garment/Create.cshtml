@@ -1,0 +1,19 @@
+﻿@model KnerdyKnitter.Models.Garment
+
+@if (User.Identity.IsAuthenticated)
+{
+    @using (Html.BeginForm())
+    {
+        <label asp-for="ColDim">Number of Stitches</label>
+        @Html.TextBoxFor(model => model.ColDim)
+        <label asp-for="RowDim">Number of Rows</label>
+        @Html.TextBoxFor(model => model.RowDim)
+        <label asp-for="Rule">Rule: </label>
+        @Html.TextBoxFor(model => model.Rule)
+        <input type="submit" value="Save pattern"/>
+    }
+}
+else
+{
+    <p>Login or register to save your pattern!</p>
+}
