@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KnerdyKnitter.Models
@@ -16,6 +17,7 @@ namespace KnerdyKnitter.Models
         public int KnitterId { get; set; }
         public virtual Knitter Knitter { get; set; }
         KnerdyKnitterContext db = new KnerdyKnitterContext();
+        public Color() { }
 
         public Color(string hex, string type, int garmentId, int knitterId)
         {
@@ -30,6 +32,17 @@ namespace KnerdyKnitter.Models
             db.Colors.Add(color);
             db.SaveChanges();
             return color;
+        }
+        public Color Edit(Color color)
+        {
+            db.Entry(color).State = EntityState.Modified;
+            db.SaveChanges();
+            return color;
+        }
+        public void Remove(Color color)
+        {
+            db.Colors.Remove(color);
+            db.SaveChanges();
         }
     }
 }

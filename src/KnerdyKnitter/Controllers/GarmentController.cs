@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using KnerdyKnitter.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -48,12 +49,18 @@ namespace KnerdyKnitter.Controllers
         }
         public IActionResult Edit(int id)
         {
-            Garment thisGarment = _db.Garments.FirstOrDefault(g => g.Id == id);
+            Garment thisGarment = _db.Garments.Include(g => g.Colors).FirstOrDefault(g => g.Id == id);
+            thisGarment.MakeGarment(new bool[] { true, true, true, true, false, true, true, true }, thisGarment.RowDim);
             return View(thisGarment);
         }
         [HttpPost]
-        public IActionResult Edit(Garment garment)
+        public IActionResult Edit(Garment garment, string primary, string secondary)
         {
+            if(primary != garment.Colors[0].Hex)
+            {
+                Color primaryColor = _db.Colors.FirstOrDefault(c => c.Type == primary);
+                primaryColor.Edit(primaryColor);
+            }
             garment.Edit(garment);
             return View(garment);
         }
