@@ -20,7 +20,7 @@
 }
 
 @{ int xCoor = 0;
-    int yCoor = 0;}
+   int yCoor = 0;}
 <script src="https://code.jquery.com/jquery-3.1.1.js"
         integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
         crossorigin="anonymous"></script>
@@ -59,21 +59,36 @@
                 $(clickID).click(function (event) {
                     var currentId = "#" + $(this).attr('id');
                     var color = $(currentId).css('fill');
-
-
-
-                    // Fix Hex conversion
-                    console.log(color);
+                    colorAsHex = rgbToHex(color);
                     var secondary = "@(Model.Colors[1].Hex)";
-                    if(color === secondary) {
-                    console.log("click");
+                    console.log(secondary);
+                    console.log(colorAsHex);
+                    if (colorAsHex === secondary) {
                         $(currentId).css({fill: "@(Model.Colors[0].Hex)"});
                     }
-                    @*else{
-                        $(currentId).css({fill: "@Model.Colors[0].Hex";});}*@
+                    else{
+                        $(currentId).css({fill: "@Model.Colors[1].Hex"});
+                    }
                 });
             }                
-    }
+        }
+        function breakRgb(color) {
+            var pattern = /\d+/g;
+            console.log(color);
+            var colorArr = color.match(pattern);
+            console.log(colorArr);
+            return colorArr;
+        }
+        function intToHex(c) {
+            var hex = parseInt(c).toString(16);
+            console.log(hex);
+            return hex.length == 1 ? "0" + hex : hex;
+        }
+
+        function rgbToHex(color) {
+            var colorArr = breakRgb(color);
+            return "#" + intToHex(colorArr[0]) + intToHex(colorArr[1]) + intToHex(colorArr[2]);
+        }
 
 
 
