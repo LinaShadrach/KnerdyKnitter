@@ -1,0 +1,8 @@
+﻿@model KnerdyKnitter.Models.Knitter
+@foreach (var garment in Model.Garments)
+{
+
+    @garment.Rule
+    @Html.ActionLink("Edit", "Edit", "Garment", new { id = garment.Id })
+
+}

@@ -12,3 +12,8 @@
     @Html.HiddenFor(model => model.KnitterId)
     <input type="submit" value="Save changes" />
 }
+
+<form asp-action="Delete" asp-controller="Garment" method="post">
+    <input type="hidden" value="@Model.Id" name="garmentId"/>
+    <button type="submit">Delete Garment</button>
+</form>

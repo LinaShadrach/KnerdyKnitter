@@ -39,14 +39,12 @@ namespace KnerdyKnitter.Models
             db.SaveChanges();
             return garment;
         }
-
         public Garment Edit(Garment garment)
         {
             db.Entry(garment).State = EntityState.Modified;
             db.SaveChanges();
             return garment;
         }
-
         public void Remove(Garment garment)
         {
             db.Garments.Remove(garment);

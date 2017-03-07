@@ -51,11 +51,11 @@ namespace KnerdyKnitter.Controllers
             return View(garment);
         }
         [HttpPost]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int garmentId)
         {
-            Garment thisGarment = _db.Garments.FirstOrDefault(g => g.KnitterId == id);
+            Garment thisGarment = _db.Garments.FirstOrDefault(g => g.KnitterId == garmentId);
             thisGarment.Remove(thisGarment);
-            return View();
+            return RedirectToAction("Index", "Knitter");
         }
     }
 }
