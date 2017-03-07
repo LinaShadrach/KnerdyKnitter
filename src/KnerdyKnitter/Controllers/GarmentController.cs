@@ -26,8 +26,10 @@ namespace KnerdyKnitter.Controllers
         // GET: /<controller>/
         public IActionResult Create()
         {
-            Garment emptyGarment = new Garment();
-            return View(emptyGarment);
+            Rule.MakeRules();
+            Garment sampleGarment = new Garment();
+            //sampleGarment.MakeGarment();
+            return View(sampleGarment);
         }
         [HttpPost]
         public IActionResult Create(Garment garment)
