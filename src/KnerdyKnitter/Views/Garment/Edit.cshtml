@@ -11,9 +11,9 @@
     @Html.TextBoxFor(model => model.Rule)
     @Html.HiddenFor(model => model.KnitterId)
     <label>1st Color: </label>
-    <input type="color" name="primary">
+    <input type="color" onchange="changeColor('primary', this.value)" id="primaryColor">
     <label>2nd Color: </label>
-    <input type="color" name="secondary">
+    <input type="color" onchange="changeColor('secondary', this.value)" id="secondaryColor">
 
     <input type="submit" name="editBtn" value="Try" />
     <input type="submit" name="editBtn" value="Save changes" />
@@ -26,18 +26,18 @@
         crossorigin="anonymous"></script>
 <script src="~/js/d3.min.js" type="text/javascript"></script>
 
-<svg class="scarf" width="1000" height="1000">
+<svg id="scarf" width="1000" height="1000">
     @foreach (var row in Model.Creation)
     {
         @foreach (var cell in row)
         {
             @if (cell == true)
             {
-                <rect id="r-@xCoor@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="fill:@Model.Colors[0].Hex;stroke-width:1;stroke:black;" />
+                <rect class="primaryColor" id="r-@xCoor@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="fill:@Model.Colors[0].Hex;stroke-width:1;stroke:black;" />
             }
             @if (cell == false)
             {
-                <rect id="r-@xCoor@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="fill:@Model.Colors[1].Hex;stroke-width:1;stroke:black;" />
+                <rect class="secondaryColor" id="r-@xCoor@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="fill:@Model.Colors[1].Hex;stroke-width:1;stroke:black;" />
             }
             @(xCoor = xCoor + 10)
         }
@@ -52,6 +52,18 @@
 </form>
 
 <script>
+    function changeColor(type, color) {
+        var newColor = color;
+        if (type === "primary") {
+            console.log(type);
+            $(".primaryColor").css("fill", color);
+        }
+        else {
+            console.log(type);
+
+            $(".secondaryColor").css("fill", color);
+        }
+    }
     $(document).ready(function () {
         for (var j = 0; j < 1000; j = j + 10) {
             for (var i = 0; i < 120; i = i + 10) {
