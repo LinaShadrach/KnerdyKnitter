@@ -30,10 +30,11 @@ namespace KnerdyKnitter.Models
         public Garment()
         {
             RowDim = 100;
-            ColDim = 10;
+            ColDim = 20;
             Rule = "00011110";
             CreationDate = DateTime.Now;
             Creation = new bool [100][];
+            Colors = new List<Color>() { };
         }
         public void MakeGarment(bool[] currentRow, int dimension)
         {

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using KnerdyKnitter.Models;
 using Microsoft.AspNetCore.Identity;
@@ -50,19 +48,36 @@ namespace KnerdyKnitter.Controllers
         public IActionResult Edit(int id)
         {
             Garment thisGarment = _db.Garments.Include(g => g.Colors).FirstOrDefault(g => g.Id == id);
-            thisGarment.MakeGarment(new bool[] { true, true, true, true, false, true, true, true }, thisGarment.RowDim);
+            thisGarment.MakeGarment(new bool[] { true, true, true, true, true, false, true, true, true, true}, thisGarment.RowDim);
             return View(thisGarment);
         }
         [HttpPost]
-        public IActionResult Edit(Garment garment, string primary, string secondary)
+        public IActionResult Edit(Garment garment, string primary, string secondary, string editBtn)
         {
-            if(primary != garment.Colors[0].Hex)
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var currentKnitter = _db.Knitters.FirstOrDefault(k => k.UserId == userId);
+            if (editBtn =="Try")
             {
-                Color primaryColor = _db.Colors.FirstOrDefault(c => c.Type == primary);
-                primaryColor.Edit(primaryColor);
+                Color primaryColor = new Color(primary, "primary", garment.Id, currentKnitter.Id);
+                Color secondaryColor = new Color(secondary, "secondary", garment.Id, currentKnitter.Id);
+                bool[] starterRow = new bool[] { true, true, true, true, false, true, true, true };
+                garment.MakeGarment(starterRow, garment.RowDim);
+                return Json(garment);
             }
-            garment.Edit(garment);
-            return View(garment);
+            else
+            {
+                Color primaryColor = _db.Colors.FirstOrDefault(c => c.Type == "primary" && c.KnitterId == currentKnitter.Id);
+                primaryColor.Edit(primaryColor);
+                Color secondaryColor = _db.Colors.FirstOrDefault(c => c.Type == "secondary" && c.KnitterId == currentKnitter.Id);
+                secondaryColor.Edit(secondaryColor);
+                bool[] starterRow = new bool[] { true, true, true, true, true, true, true, false, true, false, true, false, true, true, true, true, true, true };
+                garment.MakeGarment(starterRow, garment.RowDim);
+                garment.Colors.Add(primaryColor);
+                garment.Colors.Add(secondaryColor);
+                garment.Edit(garment);
+                return View(garment);
+            }
+
         }
         [HttpPost]
         public IActionResult Delete(int garmentId)

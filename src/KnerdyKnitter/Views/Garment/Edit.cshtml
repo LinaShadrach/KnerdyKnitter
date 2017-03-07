@@ -10,8 +10,15 @@
     <label asp-for="Rule">Rule: </label>
     @Html.TextBoxFor(model => model.Rule)
     @Html.HiddenFor(model => model.KnitterId)
-    <input type="submit" value="Save changes" />
+    <label>1st Color: </label>
+    <input type="color" name="primary">
+    <label>2nd Color: </label>
+    <input type="color" name="secondary">
+
+    <input type="submit" name="editBtn" value="Try" />
+    <input type="submit" name="editBtn" value="Save changes" />
 }
+
 @{ int xCoor = 0;
     int yCoor = 0;}
 <script src="https://code.jquery.com/jquery-3.1.1.js"
@@ -49,16 +56,27 @@
         for (var j = 0; j < 1000; j = j + 10) {
             for (var i = 0; i < 120; i = i + 10) {
                 var clickID = "#r-" + i + j;
-                console.log(clickID);
                 $(clickID).click(function (event) {
                     var currentId = "#" + $(this).attr('id');
-                    console.log(currentId);
-                    $(currentId).css({
-                        fill: "white"
-                    });
+                    var color = $(currentId).css('fill');
+
+
+
+                    // Fix Hex conversion
+                    console.log(color);
+                    var secondary = "@(Model.Colors[1].Hex)";
+                    if(color === secondary) {
+                    console.log("click");
+                        $(currentId).css({fill: "@(Model.Colors[0].Hex)"});
+                    }
+                    @*else{
+                        $(currentId).css({fill: "@Model.Colors[0].Hex";});}*@
                 });
-            }
-        }
+            }                
+    }
+
+
+
         $("#button").click(function () {
             d3.selectAll(".scarf")
                 .append("svg")
