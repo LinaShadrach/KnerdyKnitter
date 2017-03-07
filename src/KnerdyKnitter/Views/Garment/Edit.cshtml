@@ -1,8 +1,8 @@
 ﻿@model KnerdyKnitter.Models.Garment
 
 
-@using (Html.BeginForm())
-{
+<form asp-for="Edit" asp-controller="Garment" id="editForm">
+
     <label asp-for="ColDim">Number of Stitches</label>
     @Html.TextBoxFor(model => model.ColDim, new { @Value = Model.ColDim })
     <label asp-for="RowDim">Number of Rows</label>
@@ -15,9 +15,9 @@
     <label>2nd Color: </label>
     <input type="color" onchange="changeColor('secondary', this.value)" id="secondaryColor">
 
-    <input type="submit" name="editBtn" value="Try" />
-    <input type="submit" name="editBtn" value="Save changes" />
-}
+    <input type="submit" name="editBtn" value="Try" class="edit"/>
+    <input type="submit" name="editBtn" value="Save changes" class="edit"/>
+</form>
 
 @{ int xCoor = 0;
    int yCoor = 0;}
@@ -33,11 +33,11 @@
         {
             @if (cell == true)
             {
-                <rect class="primaryColor" id="r-@xCoor@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="fill:@Model.Colors[0].Hex;stroke-width:1;stroke:black;" />
+                <rect class="primaryColor cell" id="r-@xCoor@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="fill:@Model.Colors[0].Hex;stroke-width:1;stroke:black;" />
             }
             @if (cell == false)
             {
-                <rect class="secondaryColor" id="r-@xCoor@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="fill:@Model.Colors[1].Hex;stroke-width:1;stroke:black;" />
+                <rect class="secondaryColor cell" id="r-@xCoor@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="fill:@Model.Colors[1].Hex;stroke-width:1;stroke:black;" />
             }
             @(xCoor = xCoor + 10)
         }
@@ -55,7 +55,6 @@
     function changeColor(type, color) {
         var newColor = color;
         if (type === "primary") {
-            console.log(type);
             $(".primaryColor").css("fill", color);
         }
         else {
@@ -73,8 +72,6 @@
                     var color = $(currentId).css('fill');
                     colorAsHex = rgbToHex(color);
                     var secondary = "@(Model.Colors[1].Hex)";
-                    console.log(secondary);
-                    console.log(colorAsHex);
                     if (colorAsHex === secondary) {
                         $(currentId).css({fill: "@(Model.Colors[0].Hex)"});
                     }
@@ -82,8 +79,42 @@
                         $(currentId).css({fill: "@Model.Colors[1].Hex"});
                     }
                 });
-            }                
+            }
         }
+        $("#editForm").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: 'POST',
+                data: $(this).serialize(),
+                url: '@Url.Action("Edit", "Garment")',
+                datatype: "json",
+                success: function (result) {
+                    if (result != null) {
+                        console.log(result.toString());
+                        for (var y = 0; y < result.creation.length; y += 10) {
+                            for (var x = 0; x < result.creation[y].length; x += 10) {
+                                d3.selectAll("#scarf")
+                                    .append("rect")
+                                    .attr("class", "cell")
+                                    .attr("id", "r-" + x + "" + y)
+                                    .attr("x", x)
+                                    .attr("y", y)
+                                    .attr("width", 10)
+                                    .attr("height", 10);
+                                if (result.Creation[y][x] === true) {
+                                    d3.selectAll("#r-" + x + "" + y)
+                                        .attr("class", "secondaryColor");
+                                }
+                                if (result.Creation[y][x] === false) {
+                                    d3.selectAll("#r-" + x + "" + y)
+                                        .attr("class", "primaryColor");
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
         function breakRgb(color) {
             var pattern = /\d+/g;
             console.log(color);
@@ -105,7 +136,7 @@
 
 
         $("#button").click(function () {
-            d3.selectAll(".scarf")
+            d3.selectAll("#scarf")
                 .append("svg")
                 .attr("width", 50)
                 .attr("height", 50)

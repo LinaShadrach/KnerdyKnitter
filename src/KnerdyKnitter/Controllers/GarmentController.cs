@@ -75,7 +75,7 @@ namespace KnerdyKnitter.Controllers
                 garment.Colors.Add(primaryColor);
                 garment.Colors.Add(secondaryColor);
                 garment.Edit(garment);
-                return View(garment);
+                return Json(garment);
             }
 
         }
