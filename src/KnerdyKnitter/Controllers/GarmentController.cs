@@ -37,18 +37,18 @@ namespace KnerdyKnitter.Controllers
             garment.KnitterId = currentKnitter.Id;
             garment.CreationDate = DateTime.Now;
             garment.Save(garment);
-            return View();
+            return RedirectToAction("Edit", new { id = garment.Id });
         }
         public IActionResult Edit(int id)
         {
-            Garment thisGarment = _db.Garments.FirstOrDefault(g => g.KnitterId == id);
+            Garment thisGarment = _db.Garments.FirstOrDefault(g => g.Id == id);
             return View(thisGarment);
         }
         [HttpPost]
         public IActionResult Edit(Garment garment)
         {
             garment.Edit(garment);
-            return View();
+            return View(garment);
         }
         [HttpPost]
         public IActionResult Delete(int id)

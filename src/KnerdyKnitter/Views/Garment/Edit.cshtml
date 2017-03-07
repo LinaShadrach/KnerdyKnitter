@@ -9,5 +9,6 @@
     @Html.TextBoxFor(model => model.RowDim)
     <label asp-for="Rule">Rule: </label>
     @Html.TextBoxFor(model => model.Rule)
+    @Html.HiddenFor(model => model.KnitterId)
     <input type="submit" value="Save changes" />
 }
