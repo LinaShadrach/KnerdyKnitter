@@ -12,14 +12,14 @@ namespace KnerdyKnitter.Models
         public KnerdyKnitterContext()
         {
         }
-
-        public virtual DbSet<Knitter> Knitters { get; set; }
-        public virtual DbSet<Garment> Garments { get; set; }
+        public virtual DbSet<Color> Colors { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
-        public virtual DbSet<Tag> Tags { get; set; }
-        public virtual DbSet<GarmentTag> GarmentTags { get; set; }
-        public virtual DbSet<Follow> Follows { get; set; }
         public virtual DbSet<Favorite> Favorites { get; set; }
+        public virtual DbSet<Follow> Follows { get; set; }
+        public virtual DbSet<Garment> Garments { get; set; }
+        public virtual DbSet<GarmentTag> GarmentTags { get; set; }
+        public virtual DbSet<Knitter> Knitters { get; set; }
+        public virtual DbSet<Tag> Tags { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {

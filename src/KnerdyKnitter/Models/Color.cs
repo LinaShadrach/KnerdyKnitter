@@ -15,5 +15,21 @@ namespace KnerdyKnitter.Models
         public virtual Garment Garment { get; set; }
         public int KnitterId { get; set; }
         public virtual Knitter Knitter { get; set; }
+        KnerdyKnitterContext db = new KnerdyKnitterContext();
+
+        public Color(string hex, string type, int garmentId, int knitterId)
+        {
+            Name = "";
+            Hex = hex;
+            Type = type;
+            GarmentId = garmentId;
+            KnitterId = knitterId;
+        }
+        public Color Save(Color color)
+        {
+            db.Colors.Add(color);
+            db.SaveChanges();
+            return color;
+        }
     }
 }

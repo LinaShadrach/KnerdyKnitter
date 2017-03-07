@@ -5,25 +5,25 @@ using System.Threading.Tasks;
 
 namespace KnerdyKnitter.Models
 {
-    public static class Rule
+    public static class Rules
     {
         public static string[] BaseCombos { get; set; }
-        public static string[][] AllRules { get; set; }
+        public static string[] AllRules { get; set; }
         public static int Count { get; set; }
         public static int Power { get; set; }
         public static void MakeRules()
         {
             BaseCombos = new string[8];
-            BaseCombos[0] = "111";
-            BaseCombos[1] = "110";
-            BaseCombos[2] = "101";
-            BaseCombos[3] = "100";
-            BaseCombos[4] = "011";
-            BaseCombos[5] = "010";
-            BaseCombos[6] = "001";
-            BaseCombos[7] = "000";
+            BaseCombos[0] = "TrueTrueTrue";
+            BaseCombos[1] = "TrueTrueFalse";
+            BaseCombos[2] = "TrueFalseTrue";
+            BaseCombos[3] = "TrueFalseFalse";
+            BaseCombos[4] = "FalseTrueTrue";
+            BaseCombos[5] = "FalseTrueFalse";
+            BaseCombos[6] = "FalseFalseTrue";
+            BaseCombos[7] = "FalseFalseFalse";
 
-            AllRules = new string[256][];
+            AllRules = new string[256];
             Power = 128;
             GetAllRules();
         }
@@ -64,7 +64,7 @@ namespace KnerdyKnitter.Models
                 count = i;
                 string[] rule = new string[8];
                 rule = GetRule(rule, count, power);
-                AllRules[i] = rule;
+                AllRules[i] = rule.ToString();
             }
         }
     }

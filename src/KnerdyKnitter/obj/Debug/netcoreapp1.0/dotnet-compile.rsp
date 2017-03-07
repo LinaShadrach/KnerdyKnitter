@@ -199,6 +199,8 @@ C:\Users\Lina Shadrach\Desktop\KnerdyKnitter\src\KnerdyKnitter\Controllers\Garme
 C:\Users\Lina Shadrach\Desktop\KnerdyKnitter\src\KnerdyKnitter\Controllers\KnitterController.cs
 C:\Users\Lina Shadrach\Desktop\KnerdyKnitter\src\KnerdyKnitter\Migrations\20170306224029_Initial.cs
 C:\Users\Lina Shadrach\Desktop\KnerdyKnitter\src\KnerdyKnitter\Migrations\20170306224029_Initial.Designer.cs
+C:\Users\Lina Shadrach\Desktop\KnerdyKnitter\src\KnerdyKnitter\Migrations\20170307054353_addColorToDb.cs
+C:\Users\Lina Shadrach\Desktop\KnerdyKnitter\src\KnerdyKnitter\Migrations\20170307054353_addColorToDb.Designer.cs
 C:\Users\Lina Shadrach\Desktop\KnerdyKnitter\src\KnerdyKnitter\Migrations\KnerdyKnitterContextModelSnapshot.cs
 C:\Users\Lina Shadrach\Desktop\KnerdyKnitter\src\KnerdyKnitter\Models\Alters.cs
 C:\Users\Lina Shadrach\Desktop\KnerdyKnitter\src\KnerdyKnitter\Models\ApplicationUser.cs
@@ -210,7 +212,7 @@ C:\Users\Lina Shadrach\Desktop\KnerdyKnitter\src\KnerdyKnitter\Models\Garment.cs
 C:\Users\Lina Shadrach\Desktop\KnerdyKnitter\src\KnerdyKnitter\Models\GarmentTag.cs
 C:\Users\Lina Shadrach\Desktop\KnerdyKnitter\src\KnerdyKnitter\Models\KnerdyKnitterContext.cs
 C:\Users\Lina Shadrach\Desktop\KnerdyKnitter\src\KnerdyKnitter\Models\Knitter.cs
-C:\Users\Lina Shadrach\Desktop\KnerdyKnitter\src\KnerdyKnitter\Models\Rule.cs
+C:\Users\Lina Shadrach\Desktop\KnerdyKnitter\src\KnerdyKnitter\Models\Rules.cs
 C:\Users\Lina Shadrach\Desktop\KnerdyKnitter\src\KnerdyKnitter\Models\Tag.cs
 C:\Users\Lina Shadrach\Desktop\KnerdyKnitter\src\KnerdyKnitter\ViewModels\LoginViewModel.cs
 C:\Users\Lina Shadrach\Desktop\KnerdyKnitter\src\KnerdyKnitter\ViewModels\RegisterViewModel.cs

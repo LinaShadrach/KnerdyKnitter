@@ -10,6 +10,10 @@
         @Html.TextBoxFor(model => model.RowDim)
         <label asp-for="Rule">Rule: </label>
         @Html.TextBoxFor(model => model.Rule)
+        <label>1st Color: </label>
+        <input type="color" name="primary">
+        <label>2nd Color: </label>
+        <input type="color" name="secondary">
         <input type="submit" value="Save pattern"/>
     }
 @Html.ActionLink("Edit", "Edit", "Garment", new { id = Model.Id })
@@ -18,4 +22,60 @@ else
 {
     <p>Login or register to save your pattern!</p>
 }
+@{ int xCoor = 0;
+    int yCoor = 0;}
+<script src="https://code.jquery.com/jquery-3.1.1.js"
+        integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+        crossorigin="anonymous"></script>
+<script src="~/js/d3.min.js" type="text/javascript"></script>
+
+<svg class="scarf" width="1000" height="1000">
+    @foreach (var row in Model.Creation)
+    {
+        @foreach (var cell in row)
+        {
+            @if (cell==true)
+            {
+                <rect id="r-@xCoor@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="fill:purple;stroke-width:1;stroke:black;" />
+            }
+            @if (cell == false)
+            {
+                <rect id="r-@xCoor@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="fill:gold;stroke-width:1;stroke:black;" />
+            }
+            @(xCoor = xCoor + 10)
+        }
+        @(yCoor = yCoor + 10)
+        @(xCoor = 0)
+    }
+</svg>
+
+<script>
+    $(document).ready(function () {
+        for (var j = 0; j < 1000; j = j + 10) {
+            for (var i = 0; i < 120; i = i + 10) {
+                var clickID = "#r-" + i + j;
+                console.log(clickID);
+                $(clickID).click(function (event) {
+                    var currentId = "#" + $(this).attr('id');
+                    console.log(currentId);
+                    $(currentId).css({
+                        fill: "white"
+                    });
+                });
+            }
+        }
+        $("#button").click(function () {
+            d3.selectAll(".scarf")
+                .append("svg")
+                .attr("width", 50)
+                .attr("height", 50)
+                .append("circle")
+                .attr("cx", 25)
+                .attr("cy", 25)
+                .attr("r", 25)
+                .style("fill", "purple");
+        });
+    });
+</script>
+<div id="garment"></div>
 

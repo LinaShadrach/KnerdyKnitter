@@ -26,19 +26,24 @@ namespace KnerdyKnitter.Controllers
         // GET: /<controller>/
         public IActionResult Create()
         {
-            Rule.MakeRules();
+            Rules.MakeRules();
             Garment sampleGarment = new Garment();
-            //sampleGarment.MakeGarment();
+            bool[] starterRow = new bool[] { true, true, true, true, false, true, true, true };
+            sampleGarment.MakeGarment(starterRow, sampleGarment.RowDim);
             return View(sampleGarment);
         }
         [HttpPost]
-        public IActionResult Create(Garment garment)
+        public IActionResult Create(Garment garment, string primary, string secondary)
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var currentKnitter = _db.Knitters.FirstOrDefault(k => k.UserId == userId);
             garment.KnitterId = currentKnitter.Id;
             garment.CreationDate = DateTime.Now;
             garment.Save(garment);
+            Color primaryColor = new Color(primary, "primary", garment.Id, currentKnitter.Id);
+            Color secondaryColor = new Color(secondary, "secondary", garment.Id, currentKnitter.Id);
+            primaryColor.Save(primaryColor);
+            secondaryColor.Save(secondaryColor);
             return RedirectToAction("Edit", new { id = garment.Id });
         }
         public IActionResult Edit(int id)
