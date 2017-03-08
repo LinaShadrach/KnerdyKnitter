@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -53,7 +54,7 @@ namespace KnerdyKnitter.Controllers
             return View(thisGarment);
         }
         [HttpPost]
-        public IActionResult Edit(Garment garment, string primary, string secondary, string btnClicked, string[][] allAlters)
+        public void Edit(Garment garment, string primary, string secondary, string btnClicked, string[][] allAlters)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var currentKnitter = _db.Knitters.FirstOrDefault(k => k.UserId == userId);
@@ -68,14 +69,14 @@ namespace KnerdyKnitter.Controllers
                 Color secondaryColor = new Color(secondary, "secondary", garment.Id, currentKnitter.Id);
                 bool[] starterRow = new bool[] { true, true, true, true, false, true, true, true };
                 garment.MakeGarment(starterRow, garment.RowDim);
-                return Json(garment);
+                //return Json(garment);
             }
             else
             {
-                Color primaryColor = _db.Colors.FirstOrDefault(c => c.Type == "primary" && c.KnitterId == currentKnitter.Id);
+                Color primaryColor = _db.Colors.FirstOrDefault(c => c.Type == "primary" && c.GarmentId == garment.Id);
                 primaryColor.Hex = primary;
                 primaryColor.Edit(primaryColor);
-                Color secondaryColor = _db.Colors.FirstOrDefault(c => c.Type == "secondary" && c.KnitterId == currentKnitter.Id);
+                Color secondaryColor = _db.Colors.FirstOrDefault(c => c.Type == "secondary" && c.GarmentId == garment.Id);
                 secondaryColor.Hex = secondary;
                 secondaryColor.Edit(secondaryColor);
                 bool[] starterRow = new bool[] { true, true, true, true, true, true, true, false, true, false, true, false, true, true, true, true, true, true };
@@ -83,7 +84,8 @@ namespace KnerdyKnitter.Controllers
                 garment.Colors.Add(primaryColor);
                 garment.Colors.Add(secondaryColor);
                 garment.Edit(garment);
-                return Json(garment);
+                Debug.WriteLine(Json(garment));
+                //return Json(garment);
             }
 
         }

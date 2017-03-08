@@ -1,7 +1,11 @@
 ﻿@model KnerdyKnitter.Models.Garment
 
+<script src="https://code.jquery.com/jquery-3.1.1.js"
+        integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+        crossorigin="anonymous"></script>
+<script src="~/js/d3.min.js" type="text/javascript"></script>
 
-<form asp-for="Edit" asp-controller="Garment" id="editForm">
+<form id="editForm">
     <label asp-for="ColDim">Number of Stitches</label>
     @Html.TextBoxFor(model => model.ColDim, new { @Value = Model.ColDim })
     <label asp-for="RowDim">Number of Rows</label>
@@ -10,19 +14,15 @@
     @Html.TextBoxFor(model => model.Rule)
     @Html.HiddenFor(model => model.KnitterId)
     <label>1st Color: </label>
-    <input type="color" onchange="changePrimary(this.value)" value ="@Model.Colors[0].Hex" name="primary" id="primaryColor">
+    <input type="color" onchange="changePrimary(this.value)" value="@Model.Colors[0].Hex" name="primary" id="primaryColor">
     <label>2nd Color: </label>
-    <input type="color" onchange="changeSecondary(this.value)" value ="@Model.Colors[1].Hex" name="secondary" id="secondaryColor">
-    <input type="submit" id="try" value="Try"/>
-    <input type="submit" id="saveChanges" value="Save changes"/>
+    <input type="color" onchange="changeSecondary(this.value)" value="@Model.Colors[1].Hex" name="secondary" id="secondaryColor">
+    <input type="submit" name="editBtn" value="Try" />
+    <input type="submit" name="editBtn" value="Save changes" />
 </form>
 
 @{ int xCoor = 0;
    int yCoor = 0;}
-<script src="https://code.jquery.com/jquery-3.1.1.js"
-        integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
-        crossorigin="anonymous"></script>
-<script src="~/js/d3.min.js" type="text/javascript"></script>
 
 <svg id="scarf" width="1000" height="1000">
     @foreach (var row in Model.Creation)
@@ -169,18 +169,16 @@
         });
         $("#saveChanges").click(function () {
             $(this).attr("name", "btnClicked");
-            console.log($(this).serialize());
         });
         $("#editForm").submit(function (event) {
             event.preventDefault();
             console.log($(this).serialize());
-            var model = { allAlters: getAlters(), object: $(this).serialize(), primary: $("#primaryColor").val(), secondary: $("#secondaryColor").val(), btnClicked: $("input[name=btnClicked]").val()}
+            var model = { allAlters: getAlters(), object: $(this).serialize(), primary: $("#primaryColor").val(), secondary: $("#secondaryColor").val(), editBtn: $("input[name=editBtn]").val()}
             $.ajax({
                 type: 'POST',
                 data: model,
-                datatype: 'json',
-                contentType: 'application/json',
                 url: '@Url.Action("Edit", "Garment")',
+                datatype: "json",
                 success: function (result) {
                     if (result != null) {
                         console.log(result);
