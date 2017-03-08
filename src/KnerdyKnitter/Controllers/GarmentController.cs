@@ -53,16 +53,16 @@ namespace KnerdyKnitter.Controllers
             return View(thisGarment);
         }
         [HttpPost]
-        public IActionResult Edit(Garment garment, string primary, string secondary, string editBtn, string[][] allAlters)
+        public IActionResult Edit(Garment garment, string primary, string secondary, string btnClicked, string[][] allAlters)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var currentKnitter = _db.Knitters.FirstOrDefault(k => k.UserId == userId);
             garment.KnitterId = currentKnitter.Id;
             foreach(var alter in allAlters)
             {
-                Alter newAlter = new Alter(alter[0], alter[1]);
+                Alter newAlter = new Alter(alter[0], alter[1], garment.Id);
             }
-            if (editBtn =="Try")
+            if (btnClicked =="Try")
             {
                 Color primaryColor = new Color(primary, "primary", garment.Id, currentKnitter.Id);
                 Color secondaryColor = new Color(secondary, "secondary", garment.Id, currentKnitter.Id);

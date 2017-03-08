@@ -12,6 +12,7 @@ namespace KnerdyKnitter.Models
         public KnerdyKnitterContext()
         {
         }
+        public virtual DbSet<Alter> Alters { get; set; }
         public virtual DbSet<Color> Colors { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<Favorite> Favorites { get; set; }
@@ -25,12 +26,10 @@ namespace KnerdyKnitter.Models
         {
             options.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=KnerdyKnitter;integrated security=True");
         }
-
         public KnerdyKnitterContext(DbContextOptions<KnerdyKnitterContext> options)
             : base(options)
         {
         }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Comment>()

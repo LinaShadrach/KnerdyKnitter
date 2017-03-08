@@ -8,9 +8,10 @@ using KnerdyKnitter.Models;
 namespace KnerdyKnitter.Migrations
 {
     [DbContext(typeof(KnerdyKnitterContext))]
-    partial class KnerdyKnitterContextModelSnapshot : ModelSnapshot
+    [Migration("20170308030656_addAlterTable")]
+    partial class addAlterTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -18,13 +19,34 @@ namespace KnerdyKnitter.Models
         public string Color { get; set; }
         public int GarmentId { get; set; }
         public virtual Garment Garment { get; set; }
-        public Alter(string color, string coors)
+        KnerdyKnitterContext db = new KnerdyKnitterContext();
+
+        public Alter(string color, string coors, int garmentId)
         {
             string pattern = @"\d+";
             string[] coorsArr = coors.Split('-');
-            XCor = Convert.ToInt32(Regex.Match(coorsArr[0], pattern));
+            var match = Regex.Match(coorsArr[0], pattern).ToString();
+            XCor = Convert.ToInt32(match);
             YCor = Convert.ToInt32(coorsArr[1]);
             Color = color;
+            GarmentId = garmentId;
+        }
+        public Alter Save(Alter alter)
+        {
+            db.Alters.Add(alter);
+            db.SaveChanges();
+            return alter;
+        }
+        public Alter Edit(Alter alter)
+        {
+            db.Entry(alter).State = EntityState.Modified;
+            db.SaveChanges();
+            return alter;
+        }
+        public void Remove(Alter alter)
+        {
+            db.Alters.Remove(alter);
+            db.SaveChanges();
         }
     }
 }

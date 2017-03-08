@@ -13,8 +13,8 @@
     <input type="color" onchange="changePrimary(this.value)" value ="@Model.Colors[0].Hex" name="primary" id="primaryColor">
     <label>2nd Color: </label>
     <input type="color" onchange="changeSecondary(this.value)" value ="@Model.Colors[1].Hex" name="secondary" id="secondaryColor">
-    <input type="submit" name="editBtn" value="Try"/>
-    <input type="submit" name="editBtn" value="Save changes" />
+    <input type="submit" id="try" value="Try"/>
+    <input type="submit" id="saveChanges" value="Save changes"/>
 </form>
 
 @{ int xCoor = 0;
@@ -164,16 +164,23 @@
                 });
             }
         }
-
+        $("#try").click(function () {
+            $(this).attr("name", "btnClicked");
+        });
+        $("#saveChanges").click(function () {
+            $(this).attr("name", "btnClicked");
+            console.log($(this).serialize());
+        });
         $("#editForm").submit(function (event) {
             event.preventDefault();
             console.log($(this).serialize());
-            var model = { allAlters: getAlters(), object: $(this).serialize(), primary: $("#primaryColor").val(), secondary: $("#secondaryColor").val(), editBtn: $("input[name=editBtn]").val()}
+            var model = { allAlters: getAlters(), object: $(this).serialize(), primary: $("#primaryColor").val(), secondary: $("#secondaryColor").val(), btnClicked: $("input[name=btnClicked]").val()}
             $.ajax({
                 type: 'POST',
                 data: model,
+                datatype: 'json',
+                contentType: 'application/json',
                 url: '@Url.Action("Edit", "Garment")',
-                datatype: "json",
                 success: function (result) {
                     if (result != null) {
                         console.log(result);
