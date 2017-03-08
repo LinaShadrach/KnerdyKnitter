@@ -83,6 +83,7 @@ namespace KnerdyKnitter.Controllers
                 secondaryColor.Edit(secondaryColor);
                 bool[] starterRow = new bool[] { true, true, true, true, true, true, true, false, true, false, true, false, true, true, true, true, true, true };
                 garment.Edit(garment);
+                garment.Colors.RemoveAll(c => c.GarmentId == garmentId);
                 garment.Colors.Add(primaryColor);
                 garment.Colors.Add(secondaryColor);
                 garment.MakeGarment(starterRow, garment.RowDim);
