@@ -79,7 +79,6 @@ namespace KnerdyKnitter.Controllers
                 primaryColor.Hex = primary;
                 primaryColor.Edit(primaryColor);
                 Color secondaryColor = _db.Colors.FirstOrDefault(c => c.Type == "secondary" && c.GarmentId == garment.Id);
-
                 secondaryColor.Hex = secondary;
                 secondaryColor.Edit(secondaryColor);
                 bool[] starterRow = new bool[] { true, true, true, true, true, true, true, false, true, false, true, false, true, true, true, true, true, true };
