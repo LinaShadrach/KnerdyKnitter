@@ -2,7 +2,6 @@
 
 
 <form asp-for="Edit" asp-controller="Garment" id="editForm">
-
     <label asp-for="ColDim">Number of Stitches</label>
     @Html.TextBoxFor(model => model.ColDim, new { @Value = Model.ColDim })
     <label asp-for="RowDim">Number of Rows</label>
@@ -10,13 +9,12 @@
     <label asp-for="Rule">Rule: </label>
     @Html.TextBoxFor(model => model.Rule)
     @Html.HiddenFor(model => model.KnitterId)
-    <input type="hidden" value="getAlters()">
     <label>1st Color: </label>
-    <input type="color" onchange="changeColor('primary', this.value)" id="primaryColor">
+    <input type="color" onchange="changePrimary(this.value)" value ="@Model.Colors[0].Hex" name="primary" id="primaryColor">
     <label>2nd Color: </label>
-    <input type="color" onchange="changeColor('secondary', this.value)" id="secondaryColor">
-    <input type="submit" name="editBtn" value="Try" class="edit"/>
-    <input type="submit" name="editBtn" value="Save changes" class="edit"/>
+    <input type="color" onchange="changeSecondary(this.value)" value ="@Model.Colors[1].Hex" name="secondary" id="secondaryColor">
+    <input type="submit" name="editBtn" value="Try"/>
+    <input type="submit" name="editBtn" value="Save changes" />
 </form>
 
 @{ int xCoor = 0;
@@ -31,13 +29,35 @@
     {
         @foreach (var cell in row)
         {
-            @if (cell == true)
+            string alterColor=null;
+            @foreach (var alter in Model.Alters)
             {
-                <rect class="primaryColor cell" id="r-@xCoor@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="stroke-width:1;stroke:black;" />
+                if (alter.XCor == xCoor && alter.YCor == yCoor)
+                {
+                    alterColor = alter.Color;
+                }
             }
-            @if (cell == false)
+            @if(alterColor != null)
             {
-                <rect class="secondaryColor cell" id="r-@xCoor@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="stroke-width:1;stroke:black;" />
+                @if(cell == true)
+                {
+                    <rect class="cell" id="r@xCoor-@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="fill:@alterColor;stroke-width:1;stroke:black;" />
+                }
+                @if (cell == false )
+                {
+                    <rect class="secondaryColor cell" id="r@(xCoor)-@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="fill:@alterColor;stroke-width:1;stroke:black;" />
+                }
+            }
+            else
+            {
+                @if (cell == true)
+                {
+                    <rect class="secondaryColor cell" id="r@(xCoor)-@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="stroke-width:1;stroke:black;" />
+                }
+                @if (cell == false)
+                {
+                    <rect class="primaryColor cell" id="r@(xCoor)-@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="stroke-width:1;stroke:black;" />
+                }
             }
             @(xCoor = xCoor + 10)
         }
@@ -52,56 +72,127 @@
 </form>
 
 <script>
-    $(document).ready(function () {
-        var allAlters=[];
-        $(".primaryColor").css("fill", "@(Model.Colors[0].Hex)");
-        $(".secondaryColor").css("fill", "@(Model.Colors[1].Hex)");
-        var Alters = @Model.Alters;
+    var allAlters = [];
+
+    function changePrimary(color) {
+        $(".primaryColor").css("fill", color);
+        $(".primaryColor").unbind("click");
+        $(".secondaryColor").unbind("click");
         for (var j = 0; j < 1000; j = j + 10) {
             for (var i = 0; i < 120; i = i + 10) {
-                var clickID = "#r-" + i + j;
+                var clickID = "#r" + i + "-" + j;
                 $(clickID).click(function (event) {
                     var currentId = "#" + $(this).attr('id');
-                    var color = $(currentId).css('fill');
-                    colorAsHex = rgbToHex(color);
-                    var secondary = "@(Model.Colors[1].Hex)";
-                    if (colorAsHex === secondary) {
-                        $(currentId).css("fill", "@(Model.Colors[0].Hex)");
+                    var currentColor = $(currentId).css('fill');
+                    var secondary = $("#secondaryColor").val();
+                    var colorAsHex = rgbToHex(currentColor);
+                    var primary = $("#primaryColor").val();
+
+                    if (colorAsHex === primary) {
+                        $(currentId).css("fill", secondary);
+                        $(currentId).removeClass("primaryColor");
+                        $(currentId).addClass("secondaryColor");
                         addAlter(currentId);
                     }
-                    else{
-                        $(currentId).css("fill", "@(Model.Colors[1].Hex)");
+                    else {
+                        $(currentId).css("fill", primary);
+                        $(currentId).removeClass("secondaryColor");
+                        $(currentId).addClass("primaryColor");
                         addAlter(currentId);
                     }
                 });
             }
         }
+    }
+        function changeSecondary(color) {
+            $(".secondaryColor").css("fill", color);
+            $(".primaryColor").unbind("click");
+
+            $(".secondaryColor").unbind("click");
+            for (var j = 0; j < 1000; j = j + 10) {
+                for (var i = 0; i < 120; i = i + 10) {
+                    var clickID = "#r" + i + "-" + j;
+                    $(clickID).click(function (event) {
+                        var currentId = "#" + $(this).attr('id');
+                        var currentColor = $(currentId).css('fill');
+                        var colorAsHex = rgbToHex(currentColor);
+                        var primary = $("#primaryColor").val();
+
+                        var secondary = $("#secondaryColor").val();
+                        if (colorAsHex === secondary) {
+                            $(currentId).css("fill", primary);
+                            $(currentId).removeClass("secondaryColor");
+                            $(currentId).addClass("primaryColor");
+                            addAlter(currentId);
+                        }
+                        else {
+                            $(currentId).css("fill", secondary);
+                            $(currentId).removeClass("primaryColor");
+                            $(currentId).addClass("secondaryColor");
+                            addAlter(currentId);
+                        }
+                    });
+                }
+            }
+        }
+
+
+    $(document).ready(function () {
+        $(".primaryColor").css("fill", "@(Model.Colors[0].Hex)");
+        $(".secondaryColor").css("fill", "@(Model.Colors[1].Hex)");
+        for (var j = 0; j < 1000; j = j + 10) {
+            for (var i = 0; i < 120; i = i + 10) {
+                var clickID = "#r" + i +"-"+ j;
+                $(clickID).click(function (event) {
+                    var currentId = "#" + $(this).attr('id');
+                    var color = $(currentId).css('fill');
+                    colorAsHex = rgbToHex(color);
+                    var secondary = $("#secondaryColor").val();
+                    var primary = $("#primaryColor").val();
+                    if (colorAsHex === secondary) {
+                        $(currentId).css("fill", primary);
+                        $(currentId).removeClass("secondaryColor");
+                        $(currentId).addClass("primaryColor");
+                        addAlter(currentId);
+                    }
+                    else{
+                        $(currentId).css("fill", secondary);
+                        $(currentId).removeClass("primaryColor");
+                        $(currentId).addClass("secondaryColor");
+                        addAlter(currentId);
+                    }
+                });
+            }
+        }
+
         $("#editForm").submit(function (event) {
             event.preventDefault();
+            console.log($(this).serialize());
+            var model = { allAlters: getAlters(), object: $(this).serialize(), primary: $("#primaryColor").val(), secondary: $("#secondaryColor").val(), editBtn: $("input[name=editBtn]").val()}
             $.ajax({
                 type: 'POST',
-                data: $(this).serialize(),
+                data: model,
                 url: '@Url.Action("Edit", "Garment")',
                 datatype: "json",
                 success: function (result) {
                     if (result != null) {
-                        console.log(result.toString());
+                        console.log(result);
                         for (var y = 0; y < result.creation.length; y += 10) {
                             for (var x = 0; x < result.creation[y].length; x += 10) {
                                 d3.select("#scarf")
                                     .append("rect")
                                     .attr("class", "cell")
-                                    .attr("id", "r-" + x + "" + y)
+                                    .attr("id", "r" + x + "-" + y)
                                     .attr("x", x)
                                     .attr("y", y)
                                     .attr("width", 10)
                                     .attr("height", 10);
                                 if (result.creation[y][x] === true) {
-                                    d3.selectAll("#r-" + x + "" + y)
+                                    d3.selectAll("#r" + x + "-" + y)
                                         .attr("class", "secondaryColor");
                                 }
                                 if (result.creation[y][x] === false) {
-                                    d3.selectAll("#r-" + x + "" + y)
+                                    d3.selectAll("#r" + x + "-" + y)
                                         .attr("class", "primaryColor");
                                 }
                             }
@@ -110,16 +201,15 @@
                 }
             });
         });
+
+    });
         function breakRgb(color) {
             var pattern = /\d+/g;
-            console.log(color);
             var colorArr = color.match(pattern);
-            console.log(colorArr);
             return colorArr;
         }
         function intToHex(c) {
             var hex = parseInt(c).toString(16);
-            console.log(hex);
             return hex.length == 1 ? "0" + hex : hex;
         }
 
@@ -127,34 +217,18 @@
             var colorArr = breakRgb(color);
             return "#" + intToHex(colorArr[0]) + intToHex(colorArr[1]) + intToHex(colorArr[2]);
         }
-        function changeColor(type, color) {
-            var newColor = color;
-            if (type === "primary") {
-                $(".primaryColor").css("fill", color);
-            }
-            else {
 
-                $(".secondaryColor").css("fill", color);
-            }
-        }
         function addAlter(id) {
             var alter = [];
-            alter[0]=($(id).css('fill'));
+            alter[0] = rgbToHex($(id).css('fill'));
             alter[1]=(id);
-            allAltars.push(alter);
+            allAlters.push(alter);
+            console.log(alter[0]);
+            console.log(alter[1]);
+
         }
-
-
-        $("#button").click(function () {
-            d3.selectAll("#scarf")
-                .append("svg")
-                .attr("width", 50)
-                .attr("height", 50)
-                .append("circle")
-                .attr("cx", 25)
-                .attr("cy", 25)
-                .attr("r", 25)
-                .style("fill", "purple");
-        });
-    });
+        function getAlters() {
+            console.log(allAlters[0][0]);
+            return allAlters;
+        }
 </script>

@@ -5,6 +5,7 @@ using KnerdyKnitter.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -52,10 +53,15 @@ namespace KnerdyKnitter.Controllers
             return View(thisGarment);
         }
         [HttpPost]
-        public IActionResult Edit(Garment garment, string primary, string secondary, string editBtn)
+        public IActionResult Edit(Garment garment, string primary, string secondary, string editBtn, string[][] allAlters)
         {
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var currentKnitter = _db.Knitters.FirstOrDefault(k => k.UserId == userId);
+            garment.KnitterId = currentKnitter.Id;
+            foreach(var alter in allAlters)
+            {
+                Alter newAlter = new Alter(alter[0], alter[1]);
+            }
             if (editBtn =="Try")
             {
                 Color primaryColor = new Color(primary, "primary", garment.Id, currentKnitter.Id);
@@ -67,8 +73,10 @@ namespace KnerdyKnitter.Controllers
             else
             {
                 Color primaryColor = _db.Colors.FirstOrDefault(c => c.Type == "primary" && c.KnitterId == currentKnitter.Id);
+                primaryColor.Hex = primary;
                 primaryColor.Edit(primaryColor);
                 Color secondaryColor = _db.Colors.FirstOrDefault(c => c.Type == "secondary" && c.KnitterId == currentKnitter.Id);
+                secondaryColor.Hex = secondary;
                 secondaryColor.Edit(secondaryColor);
                 bool[] starterRow = new bool[] { true, true, true, true, true, true, true, false, true, false, true, false, true, true, true, true, true, true };
                 garment.MakeGarment(starterRow, garment.RowDim);
