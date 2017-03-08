@@ -24,27 +24,37 @@ namespace KnerdyKnitter.Controllers
             _db = db;
         }
         // GET: /<controller>/
-        public IActionResult Create()
+        //public IActionResult Create()
+        //{
+        //    Rules.MakeRules();
+        //    Garment sampleGarment = new Garment();
+        //    bool[] starterRow = new bool[] { true, true, true, true, false, true, true, true };
+        //    sampleGarment.MakeGarment(starterRow, sampleGarment.RowDim);
+        //    return View(sampleGarment);
+        //}
+        //[HttpPost]
+        //public IActionResult Create(Garment garment, string primary, string secondary)
+        //{
+        //    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        //    var currentKnitter = _db.Knitters.FirstOrDefault(k => k.UserId == userId);
+        //    garment.KnitterId = currentKnitter.Id;
+        //    garment.CreationDate = DateTime.Now;
+        //    garment.Save(garment);
+        //    Color primaryColor = new Color(primary, "primary", garment.Id, currentKnitter.Id);
+        //    Color secondaryColor = new Color(secondary, "secondary", garment.Id, currentKnitter.Id);
+        //    primaryColor.Save(primaryColor);
+        //    secondaryColor.Save(secondaryColor);
+        //    return RedirectToAction("Edit", new { id = garment.Id });
+        //}
+        public IActionResult ChangeRule(string chosenRule, int rowDim, int colDim)
         {
-            Rules.MakeRules();
-            Garment sampleGarment = new Garment();
-            bool[] starterRow = new bool[] { true, true, true, true, false, true, true, true };
-            sampleGarment.MakeGarment(starterRow, sampleGarment.RowDim);
-            return View(sampleGarment);
-        }
-        [HttpPost]
-        public IActionResult Create(Garment garment, string primary, string secondary)
-        {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var currentKnitter = _db.Knitters.FirstOrDefault(k => k.UserId == userId);
-            garment.KnitterId = currentKnitter.Id;
-            garment.CreationDate = DateTime.Now;
-            garment.Save(garment);
-            Color primaryColor = new Color(primary, "primary", garment.Id, currentKnitter.Id);
-            Color secondaryColor = new Color(secondary, "secondary", garment.Id, currentKnitter.Id);
-            primaryColor.Save(primaryColor);
-            secondaryColor.Save(secondaryColor);
-            return RedirectToAction("Edit", new { id = garment.Id });
+            Garment thisGarment = new Garment();
+            thisGarment.Rule = chosenRule;
+            thisGarment.RowDim = rowDim;
+            thisGarment.ColDim = colDim;
+            bool[] starterRow = thisGarment.MakeStarterRow();
+            thisGarment.MakeGarment(starterRow, rowDim);
+            return Json(thisGarment);
         }
         public IActionResult Edit(int id)
         {
@@ -54,7 +64,7 @@ namespace KnerdyKnitter.Controllers
             Debug.WriteLine(starterRow.Length);
             if(id == 0)
             {
-                starterRow = new bool[] { true, true, true, true, false, true, true, true };
+                starterRow = thisGarment.MakeStarterRow();
                 Color primaryColor = new Color("#000000", "primary", thisGarment.Id, 0);
                 Color secondaryColor = new Color("#ffffff", "secondary", thisGarment.Id, 0);
                 thisGarment.Colors.Add(primaryColor);

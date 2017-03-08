@@ -13,7 +13,7 @@
     <label for="rowDim">Number of Rows</label>
     <input type="text" value="@Model.RowDim" name="rowDim" id="rowDim">
     <label for="chosenRule">Rule: </label>
-    <input type="text" value="@Model.Rule" name="chosenRule" id="chosenRule">
+    <input type="text" value="@Model.Rule" name="chosenRule" id="chosenRule" onchange="changeRule()">
     <input type="hidden" value="@Model.Id" name="garmentId" id="garmentId">
     <label>1st Color: </label>
     <input type="color" onchange="changePrimary(this.value)" value="@Model.Colors[0].Hex" name="primary" id="primaryColor">
@@ -138,6 +138,56 @@
             }
         }
 
+        function changeRule() {
+            console.log("changed");
+            var model = {
+                chosenRule: $("#chosenRule").val(),
+                colDim: $("#colDim").val(),
+                rowDim: $("#rowDim").val()
+            }
+            $.ajax({
+                type: 'GET',
+                data: model,
+                url: '@Url.Action("ChangeRule")',
+                success: function (result) {
+                    console.log("ajax");
+                    if (result != null) {
+                        console.log(result);
+                        d3.select('#chosenRule').attr('value', result.Rule);
+                        d3.select("#scarf").html("");
+                        var row = 0;
+                        var col = 0;
+                        for (var y = 0; y < result.rowDim; y ++) {
+                            for (var x = 0; x < result.colDim; x++) {
+                                row = y * 10;
+                                col = x * 10;
+                                d3.select("#scarf")
+                                    .append("rect")
+                                    .attr("class", "cell")
+                                    .attr("id", "r" + col + "-" + row)
+                                    .attr("x", col)
+                                    .attr("y", row)
+                                    .attr("width", 10)
+                                    .attr("height", 10);
+                                if (result.creation[y][x] === true) {
+                                    console.log(result.creation[y][x]);
+                                    d3.select("#r" + col + "-" + row)
+                                        .attr("class", "primaryColor");
+                                }
+                                else {
+                                    console.log(result.creation[y][x]);
+
+                                    d3.select("#r" + col + "-" + row)
+                                        .attr("class", "secondaryColor");
+                                }
+                            }
+                        }
+                        $(".primaryColor").css("fill", "@(Model.Colors[0].Hex)");
+                        $(".secondaryColor").css("fill", "@(Model.Colors[1].Hex)");
+                    }
+                }
+            });
+        }
 
     $(document).ready(function () {
         $(".primaryColor").css("fill", "@(Model.Colors[0].Hex)");
@@ -172,10 +222,8 @@
         $("#saveChanges").click(function () {
             $(this).attr("name", "btnClicked");
         });
-        function changeRule() {
 
-
-        }
+  
         $("#editForm").submit(function (event) {
             event.preventDefault();
             var model = {
@@ -252,4 +300,5 @@
             console.log(allAlters[0][0]);
             return allAlters;
         }
+
 </script>

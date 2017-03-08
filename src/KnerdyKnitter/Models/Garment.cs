@@ -72,18 +72,58 @@ namespace KnerdyKnitter.Models
                 }
                 var keyIndex = Array.IndexOf(Rules.BaseCombos, key);
                 char[] charRule = Rule.ToCharArray();
-                
-                if (charRule[keyIndex]=='1')
+
+                if (charRule[keyIndex] == '1')
                 {
                     nextRow[i] = true;
                 }
-                if(charRule[keyIndex]=='0')
+                if (charRule[keyIndex] == '0')
                 {
                     nextRow[i] = false;
                 }
 
             }
             return nextRow;
+        }
+        public bool[] MakeStarterRow()
+        {
+            bool[] starterRow = new bool[ColDim];
+            if(ColDim%2 == 0)
+            {
+                for(var i = 0; i<ColDim; i++)
+                {
+                    if (i > 0)
+                    {
+                        if (ColDim / i == 2)
+                        {
+                            starterRow[i] = false;
+                        }
+                        else
+                        {
+                            starterRow[i] = true;
+                        }
+                    }
+                    else
+                    {
+                        starterRow[i] = true;
+                    }
+                }
+            }
+            else
+            {
+                for (var i = 0; i < ColDim; i++)
+                {
+                    if ((ColDim-1) / i == 2)
+                    {
+                        starterRow[i] = false;
+                    }
+                    else
+                    {
+                        starterRow[i] = true;
+                    }
+                }
+            }
+            return starterRow;
         }
         public Garment Save(Garment garment)
         {
