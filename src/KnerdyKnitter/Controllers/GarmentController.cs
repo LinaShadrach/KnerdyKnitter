@@ -69,7 +69,7 @@ namespace KnerdyKnitter.Controllers
             return View(thisGarment);
         }
         [HttpPost]
-        public void Edit(int garmentId, int rowDim, int colDim, string chosenRule, string primary, string secondary, string btnClicked, string[][] allAlters)
+        public IActionResult Edit(int garmentId, int rowDim, int colDim, string chosenRule, string primary, string secondary, string btnClicked, string[][] allAlters)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var currentKnitter = _db.Knitters.FirstOrDefault(k => k.UserId == userId);
@@ -84,9 +84,11 @@ namespace KnerdyKnitter.Controllers
                 newGarment.Save(newGarment);
                 Color primaryColor = new Color(primary, "primary", newGarment.Id, currentKnitter.Id);
                 Color secondaryColor = new Color(secondary, "secondary", newGarment.Id, currentKnitter.Id);
+                primaryColor.Save(primaryColor);
+                secondaryColor.Save(secondaryColor);
                 newGarment.Colors.Add(primaryColor);
                 newGarment.Colors.Add(secondaryColor);
-
+                return Json(newGarment.Id);
             }
             else
             {
@@ -110,6 +112,8 @@ namespace KnerdyKnitter.Controllers
                 garment.Colors.Add(primaryColor);
                 garment.Colors.Add(secondaryColor);
                 garment.MakeGarment(starterRow, garment.RowDim);
+                return Json(garment.Id);
+
             }
             //if (btnClicked =="Try")
             //{

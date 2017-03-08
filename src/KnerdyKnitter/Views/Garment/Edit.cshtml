@@ -194,6 +194,10 @@
                 url: '@Url.Action("Edit")',
                 success: function (result) {
                     $('#changesSaved').fadeIn('slow').delay(3000).fadeOut('slow');
+                    if (result != null) {
+                        console.log(result);
+                        d3.select('#garmentId').attr('value', result);
+                    }
                         
                         
 
