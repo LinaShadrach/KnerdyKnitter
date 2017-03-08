@@ -71,7 +71,6 @@ namespace KnerdyKnitter.Controllers
                 Color secondaryColor = new Color(secondary, "secondary", garment.Id, currentKnitter.Id);
                 bool[] starterRow = new bool[] { true, true, true, true, false, true, true, true };
                 garment.MakeGarment(starterRow, garment.RowDim);
-                //return Json(garment);
             }
             else
             {
@@ -87,8 +86,6 @@ namespace KnerdyKnitter.Controllers
                 garment.Colors.Add(primaryColor);
                 garment.Colors.Add(secondaryColor);
                 garment.MakeGarment(starterRow, garment.RowDim);
-                Debug.WriteLine(Json(garment));
-                //return Json(garment);
             }
 
         }

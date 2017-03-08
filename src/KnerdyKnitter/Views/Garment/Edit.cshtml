@@ -1,10 +1,11 @@
-﻿@model KnerdyKnitter.Models.Garment
+﻿
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model KnerdyKnitter.Models.Garment
 
-<script src="https://code.jquery.com/jquery-3.1.1.js"
-        integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
-        crossorigin="anonymous"></script>
-<script src="~/js/d3.min.js" type="text/javascript"></script>
-
+<div id="changesSaved">Your changes were saved.</div>
 <label asp-for="Rule">Rule: </label>
 <form id="editForm">
     <label for="colDim">Number of Stitches</label>
@@ -173,7 +174,6 @@
         });
         $("#editForm").submit(function (event) {
             event.preventDefault();
-            console.log($(this).serialize());
             var model = {
                 allAlters: getAlters(),
                 chosenRule: $("#chosenRule").val(),
@@ -184,16 +184,15 @@
                 secondary: $("#secondaryColor").val(),
                 editBtn: $("input[name=btnClicked]").val()
             }
-            console.log(model);
-
             $.ajax({
                 type: 'POST',
                 data: model,
-                url: '@Url.Action("Edit", "Garment")',
-                datatype: "json",
+                url: '@Url.Action("Edit")',
                 success: function (result) {
-                    if (result != null) {
-                        console.log(result);
+                    $('#changesSaved').fadeIn('slow').delay(3000).fadeOut('slow');
+                        
+                        
+
                         //for (var y = 0; y < result.creation.length; y += 10) {
                         //    for (var x = 0; x < result.creation[y].length; x += 10) {
                         //        d3.select("#scarf")
@@ -215,7 +214,7 @@
                         //    }
                         //}
                     }
-                }
+                
             });
         });
 
