@@ -48,8 +48,24 @@ namespace KnerdyKnitter.Controllers
         }
         public IActionResult Edit(int id)
         {
-            Garment thisGarment = _db.Garments.Include(g => g.Colors).FirstOrDefault(g => g.Id == id);
-            thisGarment.MakeGarment(new bool[] { true, true, true, true, true, false, true, true, true, true}, thisGarment.RowDim);
+            Rules.MakeRules();
+            Garment thisGarment = new Garment();
+            bool[] starterRow = new bool[] { };
+            Debug.WriteLine(starterRow.Length);
+            if(id == 0)
+            {
+                starterRow = new bool[] { true, true, true, true, false, true, true, true };
+                Color primaryColor = new Color("#000000", "primary", thisGarment.Id, 0);
+                Color secondaryColor = new Color("#ffffff", "secondary", thisGarment.Id, 0);
+                thisGarment.Colors.Add(primaryColor);
+                thisGarment.Colors.Add(secondaryColor);
+            }
+            else
+            {
+                thisGarment = _db.Garments.Include(g => g.Colors).FirstOrDefault(g => g.Id == id);
+                starterRow = new bool[] { true, true, true, true, true, false, true, true, true, true };
+            }
+            thisGarment.MakeGarment(starterRow, thisGarment.RowDim);
             return View(thisGarment);
         }
         [HttpPost]
@@ -57,23 +73,31 @@ namespace KnerdyKnitter.Controllers
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var currentKnitter = _db.Knitters.FirstOrDefault(k => k.UserId == userId);
-            Garment garment = _db.Garments.FirstOrDefault(g => g.Id == garmentId);
-            garment.RowDim = rowDim;
-            garment.ColDim = colDim;
-            garment.Rule = chosenRule;
-            foreach(var alter in allAlters)
+            if(garmentId == 0)
             {
-                Alter newAlter = new Alter(alter[0], alter[1], garment.Id);
-            }
-            if (btnClicked =="Try")
-            {
-                Color primaryColor = new Color(primary, "primary", garment.Id, currentKnitter.Id);
-                Color secondaryColor = new Color(secondary, "secondary", garment.Id, currentKnitter.Id);
-                bool[] starterRow = new bool[] { true, true, true, true, false, true, true, true };
-                garment.MakeGarment(starterRow, garment.RowDim);
+                Garment newGarment = new Garment();
+                newGarment.KnitterId = currentKnitter.Id;
+                newGarment.CreationDate = DateTime.Now;
+                newGarment.RowDim = rowDim;
+                newGarment.ColDim = colDim;
+                newGarment.Rule = chosenRule;
+                newGarment.Save(newGarment);
+                Color primaryColor = new Color(primary, "primary", newGarment.Id, currentKnitter.Id);
+                Color secondaryColor = new Color(secondary, "secondary", newGarment.Id, currentKnitter.Id);
+                newGarment.Colors.Add(primaryColor);
+                newGarment.Colors.Add(secondaryColor);
+
             }
             else
             {
+                Garment garment = _db.Garments.FirstOrDefault(g => g.Id == garmentId);
+                foreach(var alter in allAlters)
+                {
+                    Alter newAlter = new Alter(alter[0], alter[1], garment.Id);
+                }
+                garment.RowDim = rowDim;
+                garment.ColDim = colDim;
+                garment.Rule = chosenRule;
                 Color primaryColor = _db.Colors.FirstOrDefault(c => c.Type == "primary" && c.GarmentId == garment.Id);
                 primaryColor.Hex = primary;
                 primaryColor.Edit(primaryColor);
@@ -87,6 +111,15 @@ namespace KnerdyKnitter.Controllers
                 garment.Colors.Add(secondaryColor);
                 garment.MakeGarment(starterRow, garment.RowDim);
             }
+            //if (btnClicked =="Try")
+            //{
+            //    Color primaryColor = new Color(primary, "primary", garment.Id, currentKnitter.Id);
+            //    Color secondaryColor = new Color(secondary, "secondary", garment.Id, currentKnitter.Id);
+            //    bool[] starterRow = new bool[] { true, true, true, true, false, true, true, true };
+            //    garment.MakeGarment(starterRow, garment.RowDim);
+            //}
+
+
 
         }
         [HttpPost]
