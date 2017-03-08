@@ -5,20 +5,21 @@
         crossorigin="anonymous"></script>
 <script src="~/js/d3.min.js" type="text/javascript"></script>
 
+<label asp-for="Rule">Rule: </label>
 <form id="editForm">
-    <label asp-for="ColDim">Number of Stitches</label>
-    @Html.TextBoxFor(model => model.ColDim, new { @Value = Model.ColDim })
-    <label asp-for="RowDim">Number of Rows</label>
-    @Html.TextBoxFor(model => model.RowDim)
-    <label asp-for="Rule">Rule: </label>
-    @Html.TextBoxFor(model => model.Rule)
-    @Html.HiddenFor(model => model.KnitterId)
+    <label for="colDim">Number of Stitches</label>
+    <input type="text" value="@Model.ColDim" name="colDim" id="colDim">
+    <label for="rowDim">Number of Rows</label>
+    <input type="text" value="@Model.RowDim" name="rowDim" id="rowDim">
+    <label for="chosenRule">Rule: </label>
+    <input type="text" value="@Model.Rule" name="chosenRule" id="chosenRule">
+    <input type="hidden" value="@Model.Id" name="garmentId" id="garmentId">
     <label>1st Color: </label>
     <input type="color" onchange="changePrimary(this.value)" value="@Model.Colors[0].Hex" name="primary" id="primaryColor">
     <label>2nd Color: </label>
     <input type="color" onchange="changeSecondary(this.value)" value="@Model.Colors[1].Hex" name="secondary" id="secondaryColor">
-    <input type="submit" name="editBtn" value="Try" />
-    <input type="submit" name="editBtn" value="Save changes" />
+    <input type="submit" id="try" value="Try" />
+    <input type="submit" id="saveChanges" value="Save changes" />
 </form>
 
 @{ int xCoor = 0;
@@ -173,7 +174,18 @@
         $("#editForm").submit(function (event) {
             event.preventDefault();
             console.log($(this).serialize());
-            var model = { allAlters: getAlters(), object: $(this).serialize(), primary: $("#primaryColor").val(), secondary: $("#secondaryColor").val(), editBtn: $("input[name=editBtn]").val()}
+            var model = {
+                allAlters: getAlters(),
+                chosenRule: $("#chosenRule").val(),
+                colDim: $("#colDim").val(),
+                rowDim: $("#rowDim").val(),
+                garmentId: $("#garmentId").val(),
+                primary: $("#primaryColor").val(),
+                secondary: $("#secondaryColor").val(),
+                editBtn: $("input[name=btnClicked]").val()
+            }
+            console.log(model);
+
             $.ajax({
                 type: 'POST',
                 data: model,
@@ -182,26 +194,26 @@
                 success: function (result) {
                     if (result != null) {
                         console.log(result);
-                        for (var y = 0; y < result.creation.length; y += 10) {
-                            for (var x = 0; x < result.creation[y].length; x += 10) {
-                                d3.select("#scarf")
-                                    .append("rect")
-                                    .attr("class", "cell")
-                                    .attr("id", "r" + x + "-" + y)
-                                    .attr("x", x)
-                                    .attr("y", y)
-                                    .attr("width", 10)
-                                    .attr("height", 10);
-                                if (result.creation[y][x] === true) {
-                                    d3.selectAll("#r" + x + "-" + y)
-                                        .attr("class", "secondaryColor");
-                                }
-                                if (result.creation[y][x] === false) {
-                                    d3.selectAll("#r" + x + "-" + y)
-                                        .attr("class", "primaryColor");
-                                }
-                            }
-                        }
+                        //for (var y = 0; y < result.creation.length; y += 10) {
+                        //    for (var x = 0; x < result.creation[y].length; x += 10) {
+                        //        d3.select("#scarf")
+                        //            .append("rect")
+                        //            .attr("class", "cell")
+                        //            .attr("id", "r" + x + "-" + y)
+                        //            .attr("x", x)
+                        //            .attr("y", y)
+                        //            .attr("width", 10)
+                        //            .attr("height", 10);
+                        //        if (result.creation[y][x] === true) {
+                        //            d3.selectAll("#r" + x + "-" + y)
+                        //                .attr("class", "secondaryColor");
+                        //        }
+                        //        if (result.creation[y][x] === false) {
+                        //            d3.selectAll("#r" + x + "-" + y)
+                        //                .attr("class", "primaryColor");
+                        //        }
+                        //    }
+                        //}
                     }
                 }
             });

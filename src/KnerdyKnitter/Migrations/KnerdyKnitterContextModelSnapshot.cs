@@ -94,7 +94,7 @@ namespace KnerdyKnitter.Migrations
 
                     b.Property<string>("Hex");
 
-                    b.Property<int>("KnitterId");
+                    b.Property<int?>("KnitterId");
 
                     b.Property<string>("Name");
 
@@ -363,10 +363,9 @@ namespace KnerdyKnitter.Migrations
                         .HasForeignKey("GarmentId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("KnerdyKnitter.Models.Knitter", "Knitter")
+                    b.HasOne("KnerdyKnitter.Models.Knitter")
                         .WithMany("Colors")
-                        .HasForeignKey("KnitterId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("KnitterId");
                 });
 
             modelBuilder.Entity("KnerdyKnitter.Models.Comment", b =>

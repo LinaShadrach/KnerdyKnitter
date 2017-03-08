@@ -10,6 +10,17 @@
     <title>@ViewBag.Title</title>
 </head>
 <body>
+    <nav class="deep-purple accent-1">
+        <div class="nav-wrapper">
+            <h1><span class="brand-logo left">@Html.ActionLink("Knerdy Knitter", "Index", "Account")</span></h1>
+            <ul class="right">
+                <li>@Html.ActionLink("About", "About", "Home")</li>
+                <li>@Html.ActionLink("Create", "Create", "Garment")</li>
+                <li>@Html.ActionLink("Saved Creations", "Garments", "Knitter")</li>
+            </ul>
+        </div>
+    </nav>
+
     <div>
         @RenderBody()
     </div>

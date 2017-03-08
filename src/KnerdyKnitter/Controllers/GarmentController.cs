@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-// For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace KnerdyKnitter.Controllers
 {
@@ -36,7 +35,7 @@ namespace KnerdyKnitter.Controllers
         [HttpPost]
         public IActionResult Create(Garment garment, string primary, string secondary)
         {
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var currentKnitter = _db.Knitters.FirstOrDefault(k => k.UserId == userId);
             garment.KnitterId = currentKnitter.Id;
             garment.CreationDate = DateTime.Now;
@@ -54,11 +53,14 @@ namespace KnerdyKnitter.Controllers
             return View(thisGarment);
         }
         [HttpPost]
-        public void Edit(Garment garment, string primary, string secondary, string btnClicked, string[][] allAlters)
+        public void Edit(int garmentId, int rowDim, int colDim, string chosenRule, string primary, string secondary, string btnClicked, string[][] allAlters)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var currentKnitter = _db.Knitters.FirstOrDefault(k => k.UserId == userId);
-            garment.KnitterId = currentKnitter.Id;
+            Garment garment = _db.Garments.FirstOrDefault(g => g.Id == garmentId);
+            garment.RowDim = rowDim;
+            garment.ColDim = colDim;
+            garment.Rule = chosenRule;
             foreach(var alter in allAlters)
             {
                 Alter newAlter = new Alter(alter[0], alter[1], garment.Id);
@@ -77,13 +79,14 @@ namespace KnerdyKnitter.Controllers
                 primaryColor.Hex = primary;
                 primaryColor.Edit(primaryColor);
                 Color secondaryColor = _db.Colors.FirstOrDefault(c => c.Type == "secondary" && c.GarmentId == garment.Id);
+
                 secondaryColor.Hex = secondary;
                 secondaryColor.Edit(secondaryColor);
                 bool[] starterRow = new bool[] { true, true, true, true, true, true, true, false, true, false, true, false, true, true, true, true, true, true };
-                garment.MakeGarment(starterRow, garment.RowDim);
+                garment.Edit(garment);
                 garment.Colors.Add(primaryColor);
                 garment.Colors.Add(secondaryColor);
-                garment.Edit(garment);
+                garment.MakeGarment(starterRow, garment.RowDim);
                 Debug.WriteLine(Json(garment));
                 //return Json(garment);
             }

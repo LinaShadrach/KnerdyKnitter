@@ -8,8 +8,8 @@ using KnerdyKnitter.Models;
 namespace KnerdyKnitter.Migrations
 {
     [DbContext(typeof(KnerdyKnitterContext))]
-    [Migration("20170308030656_addAlterTable")]
-    partial class addAlterTable
+    [Migration("20170308162907_removeKnitterIdColOnColors")]
+    partial class removeKnitterIdColOnColors
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -95,7 +95,7 @@ namespace KnerdyKnitter.Migrations
 
                     b.Property<string>("Hex");
 
-                    b.Property<int>("KnitterId");
+                    b.Property<int?>("KnitterId");
 
                     b.Property<string>("Name");
 
@@ -364,10 +364,9 @@ namespace KnerdyKnitter.Migrations
                         .HasForeignKey("GarmentId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("KnerdyKnitter.Models.Knitter", "Knitter")
+                    b.HasOne("KnerdyKnitter.Models.Knitter")
                         .WithMany("Colors")
-                        .HasForeignKey("KnitterId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("KnitterId");
                 });
 
             modelBuilder.Entity("KnerdyKnitter.Models.Comment", b =>
