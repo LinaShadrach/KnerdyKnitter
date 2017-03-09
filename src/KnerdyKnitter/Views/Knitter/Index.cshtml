@@ -4,7 +4,12 @@
 }
 @model KnerdyKnitter.Models.Knitter
 <div class="row">
+    @if (Model.Garments.Count == 0)
+    {
+        <p>You have not made any creations yet.</p>
+        <p>@Html.ActionLink("Create", "Edit", "Garment", new { id = 0 }) a new pattern.</p>
 
+    }
     @foreach (var garment in Model.Garments)
     {
         <div class="col s12 m3 l2">

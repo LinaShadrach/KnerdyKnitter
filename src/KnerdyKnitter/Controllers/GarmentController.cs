@@ -145,7 +145,7 @@ namespace KnerdyKnitter.Controllers
         [HttpPost]
         public IActionResult Delete(int garmentId)
         {
-            Garment thisGarment = _db.Garments.FirstOrDefault(g => g.KnitterId == garmentId);
+            Garment thisGarment = _db.Garments.FirstOrDefault(g => g.Id == garmentId);
             thisGarment.Remove(thisGarment);
             return RedirectToAction("Index", "Knitter");
         }

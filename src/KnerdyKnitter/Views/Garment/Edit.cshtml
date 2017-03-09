@@ -96,18 +96,20 @@
         @(xCoor = 0)
     }
 </svg>
+@if (Model.Id!=0){
+    <form asp-action="Delete" asp-controller="Garment" method="post">
+        <input type="hidden" value="@Model.Id" name="garmentId"/>
+        <button type="submit">Delete Garment</button>
+    </form>
+}
 
-<form asp-action="Delete" asp-controller="Garment" method="post">
-    <input type="hidden" value="@Model.Id" name="garmentId"/>
-    <button type="submit">Delete Garment</button>
-</form>
+    
 
 <script>
     var allAlters = [];
     function changePrimary(color) {
         $(".primaryColor").css("fill", color);
         $(".scarf").unbind("click");
-       // $(".secondaryColor").unbind("click");
         for (var j = 0; j < 1000; j = j + 10) {
             for (var i = 0; i < 120; i = i + 10) {
                 var clickID = "#r" + i + "-" + j;
@@ -137,7 +139,6 @@
     function changeSecondary(color) {
         $(".secondaryColor").css("fill", color);
         $(".scarf").unbind("click");
-        //$(".secondaryColor").unbind("click");
         for (var j = 0; j < 1000; j = j + 10) {
             for (var i = 0; i < 120; i = i + 10) {
                 var clickID = "#r" + i + "-" + j;
@@ -168,7 +169,7 @@
         var model = {
             chosenRule: $("#chosenRule").val(),
             colDim: parseInt($("#colDim").val()),
-                rowDim: parseInt($("#rowDim").val()),
+            rowDim: parseInt($("#rowDim").val()),
         }
         $.ajax({
             type: 'GET',

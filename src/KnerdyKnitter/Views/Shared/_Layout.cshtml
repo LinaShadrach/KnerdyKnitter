@@ -6,20 +6,26 @@
     @*<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">*@
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css" />
-    <script src="~/js/d3.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script src="~/js/d3.min.js" type="text/javascript"></script>
     <script src="~/js/scripts.js"></script>
-    <link rel="stylesheet" href="~/css/styles.css" />
+    <link rel="stylesheet" href="~/css/styles.css" type="text/css"/>
     <title>@ViewBag.Title</title>
 </head>
 <body>
+    @using System.Security.Claims
+
+
     <nav class="deep-purple accent-1">
         <div class="nav-wrapper">
             <h1><span class="brand-logo left">@Html.ActionLink("Knerdy Knitter", "Index", "Account")</span></h1>
             <ul class="right">
                 <li>@Html.ActionLink("About", "About", "Home")</li>
-                <li>@Html.ActionLink("Create", "Edit", "Garment", new { id = 0 })</li>
-                <li>@Html.ActionLink("Saved Creations", "Index", "Knitter")</li>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li>@Html.ActionLink("Create", "Edit", "Garment", new { id = 0 })</li>
+                    <li>@Html.ActionLink("Saved Creations", "Index", "Knitter")</li>
+                }
             </ul>
         </div>
     </nav>
