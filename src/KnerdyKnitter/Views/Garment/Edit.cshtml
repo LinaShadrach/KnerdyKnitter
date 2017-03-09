@@ -3,105 +3,116 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @model KnerdyKnitter.Models.Garment
+<div class="row">
+    <div class="col s12 m6 l6">
 
-<p for="Rule">Rule: <span class="ruleDecimal"></span></p>
-@{ int baseX = 0;
-    int index = 0; }
-<svg id="baseCombos" width="350" height="50">
-    @foreach (var baseCombo in ViewBag.BaseCombos)
-    {
-        @foreach (var cell in baseCombo)
+        <p for="Rule">Rule: <span class="ruleDecimal"></span></p>
+        @{ int baseX = 0;
+        int index = 0; }
+        <svg id="baseCombos" width="350" height="50">
+        @foreach (var baseCombo in ViewBag.BaseCombos)
         {
-            @if ((cell == "Tru") || (cell == "True"))
+            @foreach (var cell in baseCombo)
             {
-                <rect class="primaryColor cell" x="@baseX" y="0" width="10" height="10" style="stroke-width:1;stroke:black;" />
+                @if ((cell == "Tru") || (cell == "True"))
+                {
+                    <rect class="primaryColor cell" x="@baseX" y="0" width="10" height="10" style="stroke-width:1;stroke:black;" />
+                }
+                else
+                {
+                    <rect class="secondaryColor cell" x="@baseX" y="0" width="10" height="10" style="stroke-width:1;stroke:black;" />
+                }
+                @(baseX += 10)
+            }
+            @if (Model.Rule[index] == '1')
+            {
+                <rect id="ruleCell@(index)" onchange="changeRuleVis()" class="secondaryColor cell" x="@(baseX - 20)" y="10" width="10" height="10" style="stroke-width:1;stroke:black;" />
             }
             else
             {
-                <rect class="secondaryColor cell" x="@baseX" y="0" width="10" height="10" style="stroke-width:1;stroke:black;" />
+                <rect id="ruleCell@(index)" onchange="changeRuleVis()" class="primaryColor cell" x="@(baseX - 20)" y="10" width="10" height="10" style="stroke-width:1;stroke:black;" />
             }
-            @(baseX += 10)
-        }
-        @if (Model.Rule[index] == '1')
-        {
-            <rect id="ruleCell@(index)" onchange="changeRuleVis()" class="secondaryColor cell" x="@(baseX - 20)" y="10" width="10" height="10" style="stroke-width:1;stroke:black;" />
-        }
-        else
-        {
-            <rect id="ruleCell@(index)" onchange="changeRuleVis()" class="primaryColor cell" x="@(baseX - 20)" y="10" width="10" height="10" style="stroke-width:1;stroke:black;" />
-        }
 
-        baseX += 10;
-            index++; 
-    }
-</svg>
-<form id="editForm">
-    <label for="colDim">Number of Stitches</label>
-    <input type="text" value="@Model.ColDim" name="colDim" id="colDim" onchange="changeRule()">
-    <label for="rowDim">Number of Rows</label>
-    <input type="hidden" value="@Model.RowDim" name="rowDim" id="rowDim">
-    <input type="hidden" value="@Model.Rule" name="chosenRule" id="chosenRule" onchange="changeRule()">
-    <input type="hidden" value="@Model.Id" name="garmentId" id="garmentId">
-    <label>1st Color: </label>
-    <input type="color" onchange="changePrimary(this.value)" value="@Model.Colors[0].Hex" name="primary" id="primaryColor">
-    <label>2nd Color: </label>
-    <input type="color" onchange="changeSecondary(this.value)" value="@Model.Colors[1].Hex" name="secondary" id="secondaryColor">
-    <input type="button" id="try" value="Try" />
-    <input type="submit" id="saveChanges" value="Save changes" />
-</form>
-<div id="changesSaved">Your changes were saved.</div>
-
-@{ int xCoor = 0;
-    int yCoor = 0;
-    var svgWidth = Model.ColDim * 10;
-    var svgHeight = Model.RowDim * 10; }
-<svg id="scarf" width="@(svgWidth)" height="@(svgHeight)">
-    @for (var i = 0; i<Model.RowDim; i++)
-    {
-        @foreach (var cell in Model.Creation[i])
-        {
-            string alterColor=null;
-            @foreach (var alter in Model.Alters)
-            {
-                if (alter.XCor == xCoor && alter.YCor == yCoor)
-                {
-                    alterColor = alter.Color;
-                }
-            }
-            @if(alterColor != null)
-            {
-                @if(cell == true)
-                {
-                    <rect class="cell" id="r@xCoor-@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="fill:@alterColor;stroke-width:1;stroke:black;" />
-                }
-                @if (cell == false )
-                {
-                    <rect class="secondaryColor cell" id="r@(xCoor)-@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="fill:@alterColor;stroke-width:1;stroke:black;" />
-                }
-            }
-            else
-            {
-                @if (cell == true)
-                {
-                    <rect class="secondaryColor cell scarf" id="r@(xCoor)-@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="stroke-width:1;stroke:black;" />
-                }
-                @if (cell == false)
-                {
-                    <rect class="primaryColor cell scarf" id="r@(xCoor)-@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="stroke-width:1;stroke:black;" />
-                }
-            }
-            @(xCoor = xCoor + 10)
+            baseX += 10;
+                index++; 
         }
-        @(yCoor = yCoor + 10)
-        @(xCoor = 0)
-    }
-</svg>
-@if (Model.Id!=0){
-    <form asp-action="Delete" asp-controller="Garment" method="post">
-        <input type="hidden" value="@Model.Id" name="garmentId"/>
-        <button type="submit">Delete Garment</button>
-    </form>
-}
+        </svg>
+        <form id="editForm">
+            <label for="colDim">Number of Stitches</label>
+            <input type="text" value="@Model.ColDim" name="colDim" id="colDim" onchange="changeRule()">
+            <input type="hidden" value="@Model.RowDim" name="rowDim" id="rowDim">
+            <input type="hidden" value="@Model.Rule" name="chosenRule" id="chosenRule" onchange="changeRule()">
+            <input type="hidden" value="@Model.Id" name="garmentId" id="garmentId">
+            <label>1st Color: </label>
+            <input type="color" onchange="changePrimary(this.value)" value="@Model.Colors[0].Hex" name="primary" id="primaryColor">
+            <label>2nd Color: </label>
+            <input type="color" onchange="changeSecondary(this.value)" value="@Model.Colors[1].Hex" name="secondary" id="secondaryColor"><br />
+            <input type="button" id="try" value="Try" />
+            <input type="submit" id="saveChanges" value="Save changes" />
+        </form>
+        @if (Model.Id != 0)
+        {
+            <form asp-action="Delete" asp-controller="Garment" method="post">
+                <input type="hidden" value="@Model.Id" name="garmentId" />
+                <button type="submit">Delete Garment</button>
+            </form>
+        }
+        <div id="changesSaved">Your changes were saved.</div>
+
+        </div>
+    <div class="col s12 m6 l6">
+
+    @{ int xCoor = 0;
+        int yCoor = 0;
+        var svgWidth = Model.ColDim * 10;
+        var svgHeight = Model.RowDim * 10; }
+        <div id="scarfBox">
+            <svg id="scarf" width="@(svgWidth)" height="@(svgHeight)">
+                @for (var i = 0; i < Model.RowDim; i++)
+                {
+                    @foreach (var cell in Model.Creation[i])
+                    {
+                        string alterColor = null;
+                        @foreach (var alter in Model.Alters)
+                        {
+                            if (alter.XCor == xCoor && alter.YCor == yCoor)
+                            {
+                                alterColor = alter.Color;
+                            }
+                        }
+                        @if (alterColor != null)
+                        {
+                            @if (cell == true)
+                            {
+                                <rect class="cell" id="r@xCoor-@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="fill:@alterColor;stroke-width:1;stroke:black;" />
+                            }
+                            @if (cell == false)
+                            {
+                                <rect class="secondaryColor cell" id="r@(xCoor)-@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="fill:@alterColor;stroke-width:1;stroke:black;" />
+                            }
+                        }
+                        else
+                        {
+                            @if (cell == true)
+                            {
+                                <rect class="primaryColor cell scarf" id="r@(xCoor)-@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="stroke-width:1;stroke:black;" />
+                            }
+                            @if (cell == false)
+                            {
+                                <rect class="secondaryColor cell scarf" id="r@(xCoor)-@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="stroke-width:1;stroke:black;" />
+                            }
+                        }
+                        @(xCoor = xCoor + 10)
+                    }
+                    @(yCoor = yCoor + 10)
+                    @(xCoor = 0)
+                }
+            </svg>
+        </div>
+    
+    </div>
+    </div>
+
 
     
 

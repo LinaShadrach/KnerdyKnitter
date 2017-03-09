@@ -32,6 +32,8 @@
 
                         var svgWidth = garment.ColDim * 5;
                         var svgHeight = garment.RowDim * 5;
+                        <div id="showMore">
+
                         <svg id="scarf" width="@(svgWidth)" height="@(svgHeight)" display="inline">
                             @{ int yCoor = 0;
                                 int xCoor = 0; }
@@ -74,6 +76,7 @@
                                 @(xCoor = 0)
                             }
                         </svg>
+                        </div>
                     }
 
                 </div>
@@ -84,3 +87,11 @@
         </div>
     }
 </div>
+<script>
+    $(document).ready(function () {
+        $("#showMore").click(function () {
+
+
+        });
+    });
+</script>
