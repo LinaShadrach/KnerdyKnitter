@@ -76,6 +76,13 @@ namespace KnerdyKnitter.Controllers
                 starterRow = new bool[] { true, true, true, true, true, false, true, true, true, true };
             }
             thisGarment.MakeGarment(starterRow, thisGarment.RowDim);
+            List<string[]> baseCombos = new List<string[]> () { };
+            foreach(string rule in Rules.BaseCombos)
+            {
+                string[] ruleArr = rule.Split(new char[]{'e'}, 3);
+                baseCombos.Add(ruleArr);
+            }
+            ViewBag.BaseCombos = baseCombos;
             return View(thisGarment);
         }
         [HttpPost]

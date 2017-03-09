@@ -7,6 +7,36 @@
 
 <div id="changesSaved">Your changes were saved.</div>
 <label asp-for="Rule">Rule: </label>
+@{ int baseX = 0;
+    int index = 0; }
+<svg id="baseCombos" width="350" height="50">
+    @foreach (var baseCombo in ViewBag.BaseCombos)
+    {
+        @foreach (var cell in baseCombo)
+        {
+            @if ((cell == "Tru") || (cell == "True"))
+            {
+                <rect class="primaryColor cell" x="@baseX" y="0" width="10" height="10" style="stroke-width:1;stroke:black;" />
+            }
+            else
+            {
+                <rect class="secondaryColor cell" x="@baseX" y="0" width="10" height="10" style="stroke-width:1;stroke:black;" />
+            }
+            @(baseX += 10)
+        }
+        @if (Model.Rule[index] == '1')
+        {
+            <rect id="ruleCell@(index)" onchange="changeRuleVis()" class="secondaryColor cell" x="@(baseX - 20)" y="10" width="10" height="10" style="stroke-width:1;stroke:black;" />
+        }
+        else
+        {
+            <rect id="ruleCell@(index)" onchange="changeRuleVis()" class="primaryColor cell" x="@(baseX - 20)" y="10" width="10" height="10" style="stroke-width:1;stroke:black;" />
+        }
+
+        baseX += 10;
+            index++; 
+    }
+</svg>
 <form id="editForm">
     <label for="colDim">Number of Stitches</label>
     <input type="text" value="@Model.ColDim" name="colDim" id="colDim">
@@ -138,7 +168,7 @@
                 }
             }
         }
-
+        
         function changeRule() {
             var model = {
                 chosenRule: $("#chosenRule").val(),
@@ -153,7 +183,7 @@
                     console.log("ajax");
                     if (result != null) {
                         console.log(result);
-                        d3.select('#chosenRule').attr('value', result.Rule);
+                        d3.select('#chosenRule').attr('value', result.rule);
                         d3.select("#scarf").html("");
                         var row = 0;
                         var col = 0;
@@ -169,13 +199,10 @@
                                     .attr("width", 10)
                                     .attr("height", 10);
                                 if (result.creation[y][x] === true) {
-                                    console.log(result.creation[y][x]);
                                     d3.select("#r" + col + "-" + row)
                                         .attr("class", "primaryColor cell");
                                 }
                                 else {
-                                    console.log(result.creation[y][x]);
-
                                     d3.select("#r" + col + "-" + row)
                                         .attr("class", "secondaryColor cell");
                                 }
@@ -211,11 +238,48 @@
     $(document).ready(function () {
         $(".primaryColor").css("fill", "@(Model.Colors[0].Hex)");
         $(".secondaryColor").css("fill", "@(Model.Colors[1].Hex)");
+        for(var l = 0; l<8;l++){
+            var ruleCellId = "#ruleCell"+l;
+            var pattern = ""
+            $(ruleCellId).click(function(){
+                console.log("click");
+                var currentId = "#" + $(this).attr('id');
+                var pattern = /\d/g;
+                var index = currentId.match(pattern).toString();
+                var chosenRule= $("#chosenRule").val();
+                if(chosenRule[index]=="1"){
+
+                    var firstSub = chosenRule.substr(0, index) + "0";
+                    //chosenRule = chosenRule.substr(index + 1);
+                    console.log(firstSub);
+                    console.log(chosenRule);
+
+                    $(currentId).removeClass("secondaryColor");
+                    $(currentId).addClass("primaryColor");
+                    addAlter(currentId);
+                    d3.select("#chosenRule").attr("value", chosenRule);   
+
+                }
+                else {
+
+                    
+                        var firstSub = chosenRule.substr(0, index) + "1";
+                        //chosenRule = chosenRule.substring(index + 1);
+                        console.log(chosenRule);
+
+                    $(currentId).removeClass("primaryColor");
+                    $(currentId).addClass("secondaryColor");
+                    addAlter(currentId);
+                    d3.select("#chosenRule").attr("value", chosenRule);   
+                }
+                changeRule();
+            });
+
+        }
         for (var j = 0; j < @(Model.RowDim); j = j + 10) {
             for (var i = 0; i < @(Model.ColDim); i = i + 10) {
                 var clickID = "#r" + i +"-"+ j;
                 $(clickID).click(function (event) {
-                    console.log("click");
                     var currentId = "#" + $(this).attr('id');
                     var color = $(currentId).css('fill');
                     colorAsHex = rgbToHex(color);
