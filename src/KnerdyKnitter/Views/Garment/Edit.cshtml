@@ -5,8 +5,7 @@
 }
 @model KnerdyKnitter.Models.Garment
 
-<div id="changesSaved">Your changes were saved.</div>
-<label asp-for="Rule">Rule: <span class="ruleDecimal"></span></label>
+<p for="Rule">Rule: <span class="ruleDecimal"></span></p>
 @{ int baseX = 0;
     int index = 0; }
 <svg id="baseCombos" width="350" height="50">
@@ -51,6 +50,7 @@
     <input type="button" id="try" value="Try" />
     <input type="submit" id="saveChanges" value="Save changes" />
 </form>
+<div id="changesSaved">Your changes were saved.</div>
 
 @{ int xCoor = 0;
     int yCoor = 0;
@@ -180,6 +180,7 @@
                 if (result != null) {
                     console.log(result);
                     d3.select('#chosenRule').attr('value', result.rule);
+                    $(".ruleDecimal").text(parseInt(result.rule, 2))
                     d3.select('#rowDim').attr('value', result.rowDim);
                     d3.select('#colDim').attr('value', result.colDim);
                     d3.select('svg#scarf').attr('width', (result.colDim*10)).attr('width', (result.rowDim*10));
@@ -233,6 +234,9 @@
     }
 
     $(document).ready(function () {
+        var binaryRule = $("#chosenRule").val();
+        $(".ruleDecimal").text(parseInt(binaryRule, 2))
+        console.log(binaryRule);
         $(".primaryColor").css("fill", "@(Model.Colors[0].Hex)");
         $(".secondaryColor").css("fill", "@(Model.Colors[1].Hex)");
         //$("#ruleDecimal")
