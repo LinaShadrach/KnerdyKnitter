@@ -164,7 +164,6 @@
                                 col = x * 10;
                                 d3.select("#scarf")
                                     .append("rect")
-                                    .attr("class", "cell")
                                     .attr("id", "r" + col + "-" + row)
                                     .attr("x", col)
                                     .attr("y", row)
@@ -173,13 +172,13 @@
                                 if (result.creation[y][x] === true) {
                                     console.log(result.creation[y][x]);
                                     d3.select("#r" + col + "-" + row)
-                                        .attr("class", "primaryColor");
+                                        .attr("class", "primaryColor cell");
                                 }
                                 else {
                                     console.log(result.creation[y][x]);
 
                                     d3.select("#r" + col + "-" + row)
-                                        .attr("class", "secondaryColor");
+                                        .attr("class", "secondaryColor cell");
                                 }
                                 var clickID = "#r" + col + "-" + row;
                                 $(clickID).click(function (event) {
@@ -217,6 +216,7 @@
             for (var i = 0; i < 120; i = i + 10) {
                 var clickID = "#r" + i +"-"+ j;
                 $(clickID).click(function (event) {
+                    console.log("click");
                     var currentId = "#" + $(this).attr('id');
                     var color = $(currentId).css('fill');
                     colorAsHex = rgbToHex(color);

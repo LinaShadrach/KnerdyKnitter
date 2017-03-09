@@ -56,11 +56,11 @@
                                                
                                         @if (cell == true)
                                         {
-                                            <rect class="secondaryColor cell"  x ="@(xCoor)" y ="@(yCoor)" width="5" height="5" style="@garment.Colors[1].Hex; stroke-width:1;stroke:black;" />
+                                            <rect class="cell"  x ="@(xCoor)" y ="@(yCoor)" width="5" height="5" style="fill:@garment.Colors[1].Hex; stroke-width:1;stroke:black;" />
                                         }
                                         @if (cell == false)
                                     {
-                                            <rect class="primaryColor cell" x ="@(xCoor)" y ="@(yCoor)" width="5" height="5" style="fill:@garment.Colors[0].Hex; stroke-width:1;stroke:black;" />
+                                            <rect class="cell" x ="@(xCoor)" y ="@(yCoor)" width="5" height="5" style="fill:@garment.Colors[0].Hex; stroke-width:1;stroke:black;" />
                                         }
                                     
                                     @(xCoor = xCoor + 5)
