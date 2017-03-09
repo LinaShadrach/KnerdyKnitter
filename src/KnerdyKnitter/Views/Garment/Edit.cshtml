@@ -24,9 +24,10 @@
 </form>
 
 @{ int xCoor = 0;
-   int yCoor = 0;}
-
-<svg id="scarf" width="1000" height="1000">
+    int yCoor = 0;
+    var svgWidth = Model.ColDim * 10;
+    var svgHeight = Model.RowDim * 10; }
+<svg id="scarf" width="@(svgWidth)" height="@(svgHeight)">
     @foreach (var row in Model.Creation)
     {
         @foreach (var cell in row)

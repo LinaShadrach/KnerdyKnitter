@@ -26,8 +26,11 @@ namespace KnerdyKnitter.Controllers
         public IActionResult Index()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            Knitter currentKnitter = _db.Knitters.Include(k => k.Garments).FirstOrDefault(k => k.UserId == userId);
-
+            Knitter currentKnitter = _db.Knitters.Include(k => k.Garments).ThenInclude(g=> g.Colors).FirstOrDefault(k => k.UserId == userId);
+            foreach(var garment in currentKnitter.Garments)
+            {
+                garment.MakeGarment(garment.MakeStarterRow(), garment.RowDim);
+            }
             return View(currentKnitter);
         }
     }
