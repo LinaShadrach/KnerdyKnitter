@@ -109,6 +109,7 @@
 
     function changePrimary(color) {
         $(".primaryColor").css("fill", color);
+        // remove clicks from different class
         $(".primaryColor").unbind("click");
         $(".secondaryColor").unbind("click");
         for (var j = 0; j < 1000; j = j + 10) {
@@ -137,103 +138,102 @@
             }
         }
     }
-        function changeSecondary(color) {
-            $(".secondaryColor").css("fill", color);
-            $(".primaryColor").unbind("click");
+    function changeSecondary(color) {
+        $(".secondaryColor").css("fill", color);
+        $(".primaryColor").unbind("click");
+        $(".secondaryColor").unbind("click");
+        for (var j = 0; j < 1000; j = j + 10) {
+            for (var i = 0; i < 120; i = i + 10) {
+                var clickID = "#r" + i + "-" + j;
+                $(clickID).click(function (event) {
+                    var currentId = "#" + $(this).attr('id');
+                    var currentColor = $(currentId).css('fill');
+                    var colorAsHex = rgbToHex(currentColor);
+                    var primary = $("#primaryColor").val();
 
-            $(".secondaryColor").unbind("click");
-            for (var j = 0; j < 1000; j = j + 10) {
-                for (var i = 0; i < 120; i = i + 10) {
-                    var clickID = "#r" + i + "-" + j;
-                    $(clickID).click(function (event) {
-                        var currentId = "#" + $(this).attr('id');
-                        var currentColor = $(currentId).css('fill');
-                        var colorAsHex = rgbToHex(currentColor);
-                        var primary = $("#primaryColor").val();
-
-                        var secondary = $("#secondaryColor").val();
-                        if (colorAsHex === secondary) {
-                            $(currentId).css("fill", primary);
-                            $(currentId).removeClass("secondaryColor");
-                            $(currentId).addClass("primaryColor");
-                            addAlter(currentId);
-                        }
-                        else {
-                            $(currentId).css("fill", secondary);
-                            $(currentId).removeClass("primaryColor");
-                            $(currentId).addClass("secondaryColor");
-                            addAlter(currentId);
-                        }
-                    });
-                }
+                    var secondary = $("#secondaryColor").val();
+                    if (colorAsHex === secondary) {
+                        $(currentId).css("fill", primary);
+                        $(currentId).removeClass("secondaryColor");
+                        $(currentId).addClass("primaryColor");
+                        addAlter(currentId);
+                    }
+                    else {
+                        $(currentId).css("fill", secondary);
+                        $(currentId).removeClass("primaryColor");
+                        $(currentId).addClass("secondaryColor");
+                        addAlter(currentId);
+                    }
+                });
             }
         }
+    }
         
-        function changeRule() {
-            var model = {
-                chosenRule: $("#chosenRule").val(),
-                colDim: $("#colDim").val(),
-                rowDim: $("#rowDim").val(),
-            }
-            $.ajax({
-                type: 'GET',
-                data: model,
-                url: '@Url.Action("ChangeRule")',
-                success: function (result) {
-                    console.log("ajax");
-                    if (result != null) {
-                        console.log(result);
-                        d3.select('#chosenRule').attr('value', result.rule);
-                        d3.select("#scarf").html("");
-                        var row = 0;
-                        var col = 0;
-                        for (var y = 0; y < result.rowDim; y ++) {
-                            for (var x = 0; x < result.colDim; x++) {
-                                row = y * 10;
-                                col = x * 10;
-                                d3.select("#scarf")
-                                    .append("rect")
-                                    .attr("id", "r" + col + "-" + row)
-                                    .attr("x", col)
-                                    .attr("y", row)
-                                    .attr("width", 10)
-                                    .attr("height", 10);
-                                if (result.creation[y][x] === true) {
-                                    d3.select("#r" + col + "-" + row)
-                                        .attr("class", "primaryColor cell");
+    function changeRule() {
+        var model = {
+            chosenRule: $("#chosenRule").val(),
+            colDim: $("#colDim").val(),
+            rowDim: $("#rowDim").val(),
+        }
+        $.ajax({
+            type: 'GET',
+            data: model,
+            url: '@Url.Action("ChangeRule")',
+            success: function (result) {
+                console.log("ajax");
+                if (result != null) {
+                    console.log(result);
+                    d3.select('#chosenRule').attr('value', result.rule);
+                    d3.select("#scarf").html("");
+                    var row = 0;
+                    var col = 0;
+                    for (var y = 0; y < result.rowDim; y ++) {
+                        for (var x = 0; x < result.colDim; x++) {
+                            row = y * 10;
+                            col = x * 10;
+                            d3.select("#scarf")
+                                .append("rect")
+                                .attr("id", "r" + col + "-" + row)
+                                .attr("x", col)
+                                .attr("y", row)
+                                .attr("width", 10)
+                                .attr("height", 10);
+                            if (result.creation[y][x] === true) {
+                                d3.select("#r" + col + "-" + row)
+                                    .attr("class", "primaryColor cell");
+                            }
+                            else {
+                                d3.select("#r" + col + "-" + row)
+                                    .attr("class", "secondaryColor cell");
+                            }
+                            var clickID = "#r" + col + "-" + row;
+                            $(clickID).click(function (event) {
+                                var currentId = "#" + $(this).attr('id');
+                                var color = $(currentId).css('fill');
+                                colorAsHex = rgbToHex(color);
+                                var secondary = $("#secondaryColor").val();
+                                var primary = $("#primaryColor").val();
+                                if (colorAsHex === secondary) {
+                                    //$(currentId).css("fill", primary);
+                                    $(currentId).removeClass("secondaryColor");
+                                    $(currentId).addClass("primaryColor");
+                                    addAlter(currentId);
                                 }
                                 else {
-                                    d3.select("#r" + col + "-" + row)
-                                        .attr("class", "secondaryColor cell");
+                                    //$(currentId).css("fill", secondary);
+                                    $(currentId).removeClass("primaryColor");
+                                    $(currentId).addClass("secondaryColor");
+                                    addAlter(currentId);
                                 }
-                                var clickID = "#r" + col + "-" + row;
-                                $(clickID).click(function (event) {
-                                    var currentId = "#" + $(this).attr('id');
-                                    var color = $(currentId).css('fill');
-                                    colorAsHex = rgbToHex(color);
-                                    var secondary = $("#secondaryColor").val();
-                                    var primary = $("#primaryColor").val();
-                                    if (colorAsHex === secondary) {
-                                        //$(currentId).css("fill", primary);
-                                        $(currentId).removeClass("secondaryColor");
-                                        $(currentId).addClass("primaryColor");
-                                        addAlter(currentId);
-                                    }
-                                    else {
-                                        //$(currentId).css("fill", secondary);
-                                        $(currentId).removeClass("primaryColor");
-                                        $(currentId).addClass("secondaryColor");
-                                        addAlter(currentId);
-                                    }
-                                });
-                            }
+                            });
                         }
-                        $(".primaryColor").css("fill", $("#primaryColor").val());
-                        $(".secondaryColor").css("fill", $("#secondaryColor").val());
                     }
+                    $(".primaryColor").css("fill", $("#primaryColor").val());
+                    $(".secondaryColor").css("fill", $("#secondaryColor").val());
                 }
-            });
-        }
+            }
+        });
+    }
 
     $(document).ready(function () {
         $(".primaryColor").css("fill", "@(Model.Colors[0].Hex)");
@@ -248,9 +248,9 @@
                 var index = currentId.match(pattern).toString();
                 var chosenRule= $("#chosenRule").val();
                 if(chosenRule[index]=="1"){
-
-                    var firstSub = chosenRule.substr(0, index) + "0";
-                    //chosenRule = chosenRule.substr(index + 1);
+                    var nextIndex = parseInt(index)+1;
+                    var firstSub = chosenRule.substr(nextIndex);
+                    chosenRule = chosenRule.substr(0,index)+"0"+firstSub;
                     console.log(firstSub);
                     console.log(chosenRule);
 
@@ -261,10 +261,10 @@
 
                 }
                 else {
+                    var nextIndex = parseInt(index)+1;
+                    var firstSub = chosenRule.substr(nextIndex);
+                    chosenRule = chosenRule.substr(0,index)+"1"+firstSub;
 
-                    
-                        var firstSub = chosenRule.substr(0, index) + "1";
-                        //chosenRule = chosenRule.substring(index + 1);
                         console.log(chosenRule);
 
                     $(currentId).removeClass("primaryColor");
