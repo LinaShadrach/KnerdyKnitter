@@ -140,11 +140,10 @@
         }
 
         function changeRule() {
-            console.log("changed");
             var model = {
                 chosenRule: $("#chosenRule").val(),
                 colDim: $("#colDim").val(),
-                rowDim: $("#rowDim").val()
+                rowDim: $("#rowDim").val(),
             }
             $.ajax({
                 type: 'GET',
@@ -188,13 +187,13 @@
                                     var secondary = $("#secondaryColor").val();
                                     var primary = $("#primaryColor").val();
                                     if (colorAsHex === secondary) {
-                                        $(currentId).css("fill", primary);
+                                        //$(currentId).css("fill", primary);
                                         $(currentId).removeClass("secondaryColor");
                                         $(currentId).addClass("primaryColor");
                                         addAlter(currentId);
                                     }
                                     else {
-                                        $(currentId).css("fill", secondary);
+                                        //$(currentId).css("fill", secondary);
                                         $(currentId).removeClass("primaryColor");
                                         $(currentId).addClass("secondaryColor");
                                         addAlter(currentId);
@@ -202,8 +201,8 @@
                                 });
                             }
                         }
-                        $(".primaryColor").css("fill", "@(Model.Colors[0].Hex)");
-                        $(".secondaryColor").css("fill", "@(Model.Colors[1].Hex)");
+                        $(".primaryColor").css("fill", $("#primaryColor").val());
+                        $(".secondaryColor").css("fill", $("#secondaryColor").val());
                     }
                 }
             });
@@ -212,8 +211,8 @@
     $(document).ready(function () {
         $(".primaryColor").css("fill", "@(Model.Colors[0].Hex)");
         $(".secondaryColor").css("fill", "@(Model.Colors[1].Hex)");
-        for (var j = 0; j < 1000; j = j + 10) {
-            for (var i = 0; i < 120; i = i + 10) {
+        for (var j = 0; j < @(Model.RowDim); j = j + 10) {
+            for (var i = 0; i < @(Model.ColDim); i = i + 10) {
                 var clickID = "#r" + i +"-"+ j;
                 $(clickID).click(function (event) {
                     console.log("click");
@@ -244,7 +243,7 @@
             $(this).attr("name", "btnClicked");
         });
 
-  
+
         $("#editForm").submit(function (event) {
             event.preventDefault();
             var model = {
@@ -288,7 +287,7 @@
                         //    }
                         //}
                     }
-                
+
             });
         });
 
@@ -313,12 +312,8 @@
             alter[0] = rgbToHex($(id).css('fill'));
             alter[1]=(id);
             allAlters.push(alter);
-            console.log(alter[0]);
-            console.log(alter[1]);
-
         }
         function getAlters() {
-            console.log(allAlters[0][0]);
             return allAlters;
         }
 
