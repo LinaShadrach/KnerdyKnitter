@@ -6,7 +6,7 @@
 @model KnerdyKnitter.Models.Garment
 
 <div id="changesSaved">Your changes were saved.</div>
-<label asp-for="Rule">Rule: </label>
+<label asp-for="Rule">Rule: <span class="ruleDecimal"></span></label>
 @{ int baseX = 0;
     int index = 0; }
 <svg id="baseCombos" width="350" height="50">
@@ -39,17 +39,16 @@
 </svg>
 <form id="editForm">
     <label for="colDim">Number of Stitches</label>
-    <input type="text" value="@Model.ColDim" name="colDim" id="colDim">
+    <input type="text" value="@Model.ColDim" name="colDim" id="colDim" onchange="changeRule()">
     <label for="rowDim">Number of Rows</label>
-    <input type="text" value="@Model.RowDim" name="rowDim" id="rowDim">
-    <label for="chosenRule">Rule: </label>
-    <input type="text" value="@Model.Rule" name="chosenRule" id="chosenRule" onchange="changeRule()">
+    <input type="hidden" value="@Model.RowDim" name="rowDim" id="rowDim">
+    <input type="hidden" value="@Model.Rule" name="chosenRule" id="chosenRule" onchange="changeRule()">
     <input type="hidden" value="@Model.Id" name="garmentId" id="garmentId">
     <label>1st Color: </label>
     <input type="color" onchange="changePrimary(this.value)" value="@Model.Colors[0].Hex" name="primary" id="primaryColor">
     <label>2nd Color: </label>
     <input type="color" onchange="changeSecondary(this.value)" value="@Model.Colors[1].Hex" name="secondary" id="secondaryColor">
-    <input type="submit" id="try" value="Try" />
+    <input type="button" id="try" value="Try" />
     <input type="submit" id="saveChanges" value="Save changes" />
 </form>
 
@@ -85,11 +84,11 @@
             {
                 @if (cell == true)
                 {
-                    <rect class="secondaryColor cell" id="r@(xCoor)-@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="stroke-width:1;stroke:black;" />
+                    <rect class="secondaryColor cell scarf" id="r@(xCoor)-@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="stroke-width:1;stroke:black;" />
                 }
                 @if (cell == false)
                 {
-                    <rect class="primaryColor cell" id="r@(xCoor)-@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="stroke-width:1;stroke:black;" />
+                    <rect class="primaryColor cell scarf" id="r@(xCoor)-@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="stroke-width:1;stroke:black;" />
                 }
             }
             @(xCoor = xCoor + 10)
@@ -106,12 +105,10 @@
 
 <script>
     var allAlters = [];
-
     function changePrimary(color) {
         $(".primaryColor").css("fill", color);
-        // remove clicks from different class
-        $(".primaryColor").unbind("click");
-        $(".secondaryColor").unbind("click");
+        $(".scarf").unbind("click");
+       // $(".secondaryColor").unbind("click");
         for (var j = 0; j < 1000; j = j + 10) {
             for (var i = 0; i < 120; i = i + 10) {
                 var clickID = "#r" + i + "-" + j;
@@ -140,8 +137,8 @@
     }
     function changeSecondary(color) {
         $(".secondaryColor").css("fill", color);
-        $(".primaryColor").unbind("click");
-        $(".secondaryColor").unbind("click");
+        $(".scarf").unbind("click");
+        //$(".secondaryColor").unbind("click");
         for (var j = 0; j < 1000; j = j + 10) {
             for (var i = 0; i < 120; i = i + 10) {
                 var clickID = "#r" + i + "-" + j;
@@ -150,7 +147,6 @@
                     var currentColor = $(currentId).css('fill');
                     var colorAsHex = rgbToHex(currentColor);
                     var primary = $("#primaryColor").val();
-
                     var secondary = $("#secondaryColor").val();
                     if (colorAsHex === secondary) {
                         $(currentId).css("fill", primary);
@@ -172,8 +168,8 @@
     function changeRule() {
         var model = {
             chosenRule: $("#chosenRule").val(),
-            colDim: $("#colDim").val(),
-            rowDim: $("#rowDim").val(),
+            colDim: parseInt($("#colDim").val()),
+                rowDim: parseInt($("#rowDim").val()),
         }
         $.ajax({
             type: 'GET',
@@ -184,6 +180,9 @@
                 if (result != null) {
                     console.log(result);
                     d3.select('#chosenRule').attr('value', result.rule);
+                    d3.select('#rowDim').attr('value', result.rowDim);
+                    d3.select('#colDim').attr('value', result.colDim);
+                    d3.select('svg#scarf').attr('width', (result.colDim*10)).attr('width', (result.rowDim*10));
                     d3.select("#scarf").html("");
                     var row = 0;
                     var col = 0;
@@ -200,11 +199,11 @@
                                 .attr("height", 10);
                             if (result.creation[y][x] === true) {
                                 d3.select("#r" + col + "-" + row)
-                                    .attr("class", "primaryColor cell");
+                                    .attr("class", "primaryColor cell scarf");
                             }
                             else {
                                 d3.select("#r" + col + "-" + row)
-                                    .attr("class", "secondaryColor cell");
+                                    .attr("class", "secondaryColor cell scarf");
                             }
                             var clickID = "#r" + col + "-" + row;
                             $(clickID).click(function (event) {
@@ -214,13 +213,11 @@
                                 var secondary = $("#secondaryColor").val();
                                 var primary = $("#primaryColor").val();
                                 if (colorAsHex === secondary) {
-                                    //$(currentId).css("fill", primary);
                                     $(currentId).removeClass("secondaryColor");
                                     $(currentId).addClass("primaryColor");
                                     addAlter(currentId);
                                 }
                                 else {
-                                    //$(currentId).css("fill", secondary);
                                     $(currentId).removeClass("primaryColor");
                                     $(currentId).addClass("secondaryColor");
                                     addAlter(currentId);
@@ -238,11 +235,11 @@
     $(document).ready(function () {
         $(".primaryColor").css("fill", "@(Model.Colors[0].Hex)");
         $(".secondaryColor").css("fill", "@(Model.Colors[1].Hex)");
+        //$("#ruleDecimal")
         for(var l = 0; l<8;l++){
             var ruleCellId = "#ruleCell"+l;
             var pattern = ""
             $(ruleCellId).click(function(){
-                console.log("click");
                 var currentId = "#" + $(this).attr('id');
                 var pattern = /\d/g;
                 var index = currentId.match(pattern).toString();
@@ -251,7 +248,6 @@
                     var nextIndex = parseInt(index)+1;
                     var firstSub = chosenRule.substr(nextIndex);
                     chosenRule = chosenRule.substr(0,index)+"0"+firstSub;
-                    console.log(firstSub);
                     console.log(chosenRule);
 
                     $(currentId).removeClass("secondaryColor");
@@ -306,7 +302,6 @@
         $("#saveChanges").click(function () {
             $(this).attr("name", "btnClicked");
         });
-
 
         $("#editForm").submit(function (event) {
             event.preventDefault();

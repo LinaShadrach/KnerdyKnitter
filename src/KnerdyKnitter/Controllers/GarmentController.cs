@@ -61,7 +61,6 @@ namespace KnerdyKnitter.Controllers
             Rules.MakeRules();
             Garment thisGarment = new Garment();
             bool[] starterRow = new bool[] { };
-            Debug.WriteLine(starterRow.Length);
             if(id == 0)
             {
                 starterRow = thisGarment.MakeStarterRow();
