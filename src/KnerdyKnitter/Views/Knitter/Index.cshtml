@@ -12,86 +12,98 @@
     }
     @foreach (var garment in Model.Garments)
     {
-        <div class="col s12 m3 l2">
+        <div class="col s12 m6 l4">
             <div class="card deep-purple lighten-1">
                 <div class="card-content white-text">
-                    <h3><span class="card-title">@garment.Rule</span></h3>
-                    <p>@garment.CreationDate</p>
-                    @if (garment.Colors.Count == 2)
-                    {
-                        <label>Primary color: </label>
-                        <svg width="10" height="10">
-                            <rect x="0" y="0" width="10" height="10" style="fill:@garment.Colors[0].Hex;stroke-width:1;stroke:black;display:inline;"/>
-                        </svg>
-                        <br />
-                        <label>Secondary color: </label>
-                        <svg width="10" height="10">
-                            <rect x="0" y="0" width="10" height="10" style="fill:@garment.Colors[1].Hex;stroke-width:1;stroke:black;display:inline;" />
-                        </svg>
-                        <br />
-
-                        var svgWidth = garment.ColDim * 5;
-                        var svgHeight = garment.RowDim * 5;
-                        <div id="showMore">
-
-                        <svg id="scarf" width="@(svgWidth)" height="@(svgHeight)" display="inline">
-                            @{ int yCoor = 0;
-                                int xCoor = 0; }
-                            @foreach (var row in garment.Creation)
-                            {
-                                @foreach (var cell in row)
-                                {
-                                    @*string alterColor = null;
-                                    @foreach (var alter in Model.Alters)
-                                    {
-                                        if (alter.XCor == xCoor && alter.YCor == yCoor)
-                                        {
-                                            alterColor = alter.Color;
-                                        }
-                                    }
-                                    @if (alterColor != null)
-                                    {
-                                        @if (cell == true)
-                                        {
-                                            <rect class="cell" width="1" height="1" style="fill:@alterColor;stroke-width:1;stroke:black;" />
-                                        }
-                                        @if (cell == false)
-                                        {
-                                            <rect class="secondaryColor cell"width="1" height="1" style="fill:@alterColor;stroke-width:1;stroke:black;" />
-                                        }
-                                    }*@
-                                               
-                                        @if (cell == true)
-                                        {
-                                            <rect class="cell"  x ="@(xCoor)" y ="@(yCoor)" width="5" height="5" style="fill:@garment.Colors[1].Hex; stroke-width:1;stroke:black;" />
-                                        }
-                                        @if (cell == false)
-                                    {
-                                            <rect class="cell" x ="@(xCoor)" y ="@(yCoor)" width="5" height="5" style="fill:@garment.Colors[0].Hex; stroke-width:1;stroke:black;" />
-                                        }
-                                    
-                                    @(xCoor = xCoor + 5)
-                                }
-                                @(yCoor = yCoor + 5)
-                                @(xCoor = 0)
-                            }
-                        </svg>
+                    <h3><span class="card-title garmentRule">Rule Used: @garment.Rule</span></h3>
+                    <div class="row">
+                        <div class="col s12 m6 l6">
+                            <label>Primary color: </label>
+                            <svg width="10" height="10">
+                                <rect x="0" y="0" width="10" height="10" style="fill:@garment.Colors[0].Hex;stroke-width:1;stroke:black;display:inline;" />
+                            </svg>
+                            <br />
+                            <label>Secondary color: </label>
+                            <svg width="10" height="10">
+                                <rect x="0" y="0" width="10" height="10" style="fill:@garment.Colors[1].Hex;stroke-width:1;stroke:black;display:inline;" />
+                            </svg>
+                            <br />
+                            <p>Date Created: @garment.CreationDate</p><br />
                         </div>
-                    }
+                        <div class="col s12 m6 l6">
 
-                </div>
-                <div class="card-action">
-                    @Html.ActionLink("Edit", "Edit", "Garment", new { id = garment.Id })
+                            @{var svgWidth = garment.ColDim * 5;
+                                var svgHeight = garment.RowDim * 5;
+                            }
+                            <svg onclick="showMore(@(garment.ColDim * 5), @(garment.RowDim * 5))" class="scarf" width="100" height="100" display="inline">
+                                @{ int yCoor = 0;
+                                    int xCoor = 0; }
+                                @foreach (var row in garment.Creation)
+                                {
+                                    @foreach (var cell in row)
+                                    {
+                                        @*string alterColor = null;
+                                            @foreach (var alter in Model.Alters)
+                                            {
+                                                if (alter.XCor == xCoor && alter.YCor == yCoor)
+                                                {
+                                                    alterColor = alter.Color;
+                                                }
+                                            }
+                                            @if (alterColor != null)
+                                            {
+                                                @if (cell == true)
+                                                {
+                                                    <rect class="cell" width="1" height="1" style="fill:@alterColor;stroke-width:1;stroke:black;" />
+                                                }
+                                                @if (cell == false)
+                                                {
+                                                    <rect class="secondaryColor cell"width="1" height="1" style="fill:@alterColor;stroke-width:1;stroke:black;" />
+                                                }
+                                            }*@
+
+                                        @if (cell == true)
+                                        {
+                                            <rect class="cell" x="@(xCoor)" y="@(yCoor)" width="5" height="5" style="fill:@garment.Colors[1].Hex; stroke-width:1;stroke:black;" />
+                                        }
+                                        @if (cell == false)
+                                        {
+                                            <rect class="cell" x="@(xCoor)" y="@(yCoor)" width="5" height="5" style="fill:@garment.Colors[0].Hex; stroke-width:1;stroke:black;" />
+                                        }
+
+                                        @(xCoor = xCoor + 5)
+                                    }
+                                    @(yCoor = yCoor + 5)
+                                    @(xCoor = 0)
+                                }
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        @Html.ActionLink("Edit", "Edit", "Garment", new { id = garment.Id })
+                        @Html.ActionLink("Delete", "Delete", "Garment", new { id = garment.Id })
+                    </div>
                 </div>
             </div>
         </div>
-    }
-</div>
+       }
+    </div>
 <script>
+    function showMore(width, height) {
+        if (d3.select(".scarf").attr("width") === 100)
+        {
+            d3.select(".scarf").attr("width", width).attr("height", height);
+        }
+        else {
+            d3.select(".scarf").attr("width", 100).attr("height", 100);
+        }
+    }
     $(document).ready(function () {
-        $("#showMore").click(function () {
-
-
-        });
+        d3.selectAll(".scarf").attr("width", 100).attr("height", 100);
+        var selectedRule = d3.selectAll(".garmentRule").attr("id");
+        console.log(selectedRule);
+        var binaryRule = parseInt(selectedRule, 2);
+        var garmentId = "#" + selectedRule;
+        $(garmentId).text(binaryRule);
     });
 </script>

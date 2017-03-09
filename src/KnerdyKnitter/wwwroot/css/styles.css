@@ -6,6 +6,11 @@
     stroke-width:1;
     stroke:black;
 }
+.scarf{
+    margin:20px;
+    margin-right:10px;
+    float:right;
+}
 #scarf{
     margin:20px;
     margin-right:10px;

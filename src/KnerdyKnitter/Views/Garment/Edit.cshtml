@@ -95,11 +95,11 @@
                         {
                             @if (cell == true)
                             {
-                                <rect class="primaryColor cell scarf" id="r@(xCoor)-@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="stroke-width:1;stroke:black;" />
+                                <rect class="primaryColor cell scarf scarfClicks" id="r@(xCoor)-@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="stroke-width:1;stroke:black;" />
                             }
                             @if (cell == false)
                             {
-                                <rect class="secondaryColor cell scarf" id="r@(xCoor)-@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="stroke-width:1;stroke:black;" />
+                                <rect class="secondaryColor cell scarf scarfClicks" id="r@(xCoor)-@yCoor" x="@xCoor" y="@yCoor" width="10" height="10" style="stroke-width:1;stroke:black;" />
                             }
                         }
                         @(xCoor = xCoor + 10)
@@ -120,7 +120,7 @@
     var allAlters = [];
     function changePrimary(color) {
         $(".primaryColor").css("fill", color);
-        $(".scarf").unbind("click");
+        $(".scarfClicks").unbind("click");
         for (var j = 0; j < 1000; j = j + 10) {
             for (var i = 0; i < 120; i = i + 10) {
                 var clickID = "#r" + i + "-" + j;
@@ -149,7 +149,7 @@
     }
     function changeSecondary(color) {
         $(".secondaryColor").css("fill", color);
-        $(".scarf").unbind("click");
+        $(".scarfClicks").unbind("click");
         for (var j = 0; j < 1000; j = j + 10) {
             for (var i = 0; i < 120; i = i + 10) {
                 var clickID = "#r" + i + "-" + j;
@@ -211,11 +211,11 @@
                                 .attr("height", 10);
                             if (result.creation[y][x] === true) {
                                 d3.select("#r" + col + "-" + row)
-                                    .attr("class", "primaryColor cell scarf");
+                                    .attr("class", "primaryColor cell scarf scarfClicks");
                             }
                             else {
                                 d3.select("#r" + col + "-" + row)
-                                    .attr("class", "secondaryColor cell scarf");
+                                    .attr("class", "secondaryColor cell scarf scarfClicks");
                             }
                             var clickID = "#r" + col + "-" + row;
                             $(clickID).click(function (event) {
@@ -247,10 +247,9 @@
     $(document).ready(function () {
         var binaryRule = $("#chosenRule").val();
         $(".ruleDecimal").text(parseInt(binaryRule, 2))
-        console.log(binaryRule);
         $(".primaryColor").css("fill", "@(Model.Colors[0].Hex)");
         $(".secondaryColor").css("fill", "@(Model.Colors[1].Hex)");
-        //$("#ruleDecimal")
+
         for(var l = 0; l<8;l++){
             var ruleCellId = "#ruleCell"+l;
             var pattern = ""
