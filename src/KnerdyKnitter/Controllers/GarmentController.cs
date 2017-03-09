@@ -72,7 +72,7 @@ namespace KnerdyKnitter.Controllers
             else
             {
                 thisGarment = _db.Garments.Include(g => g.Colors).FirstOrDefault(g => g.Id == id);
-                starterRow = new bool[] { true, true, true, true, true, false, true, true, true, true };
+                starterRow = thisGarment.MakeStarterRow();
             }
             thisGarment.MakeGarment(starterRow, thisGarment.RowDim);
             List<string[]> baseCombos = new List<string[]> () { };

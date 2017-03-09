@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -57,7 +56,7 @@
     var svgWidth = Model.ColDim * 10;
     var svgHeight = Model.RowDim * 10; }
 <svg id="scarf" width="@(svgWidth)" height="@(svgHeight)">
-    @for (var i = 0; i<Model.Creation.Length; i++)
+    @for (var i = 0; i<Model.RowDim; i++)
     {
         @foreach (var cell in Model.Creation[i])
         {
