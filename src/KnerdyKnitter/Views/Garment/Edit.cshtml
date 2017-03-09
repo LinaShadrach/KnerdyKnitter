@@ -28,9 +28,9 @@
     var svgWidth = Model.ColDim * 10;
     var svgHeight = Model.RowDim * 10; }
 <svg id="scarf" width="@(svgWidth)" height="@(svgHeight)">
-    @foreach (var row in Model.Creation)
+    @for (var i = 0; i<Model.Creation.Length; i++)
     {
-        @foreach (var cell in row)
+        @foreach (var cell in Model.Creation[i])
         {
             string alterColor=null;
             @foreach (var alter in Model.Alters)
@@ -181,6 +181,26 @@
                                     d3.select("#r" + col + "-" + row)
                                         .attr("class", "secondaryColor");
                                 }
+                                var clickID = "#r" + col + "-" + row;
+                                $(clickID).click(function (event) {
+                                    var currentId = "#" + $(this).attr('id');
+                                    var color = $(currentId).css('fill');
+                                    colorAsHex = rgbToHex(color);
+                                    var secondary = $("#secondaryColor").val();
+                                    var primary = $("#primaryColor").val();
+                                    if (colorAsHex === secondary) {
+                                        $(currentId).css("fill", primary);
+                                        $(currentId).removeClass("secondaryColor");
+                                        $(currentId).addClass("primaryColor");
+                                        addAlter(currentId);
+                                    }
+                                    else {
+                                        $(currentId).css("fill", secondary);
+                                        $(currentId).removeClass("primaryColor");
+                                        $(currentId).addClass("secondaryColor");
+                                        addAlter(currentId);
+                                    }
+                                });
                             }
                         }
                         $(".primaryColor").css("fill", "@(Model.Colors[0].Hex)");

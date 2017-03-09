@@ -113,9 +113,16 @@ namespace KnerdyKnitter.Models
             {
                 for (var i = 0; i < ColDim; i++)
                 {
-                    if ((ColDim-1) / i == 2)
+                    if (i > 0)
                     {
-                        starterRow[i] = false;
+                        if ((ColDim-1) / i == 2)
+                        {
+                            starterRow[i] = false;
+                        }
+                        else
+                        {
+                            starterRow[i] = true;
+                        }
                     }
                     else
                     {
