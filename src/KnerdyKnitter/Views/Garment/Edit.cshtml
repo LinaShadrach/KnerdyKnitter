@@ -47,7 +47,6 @@
             <input type="color" onchange="changePrimary(this.value)" value="@Model.Colors[0].Hex" name="primary" id="primaryColor">
             <label>2nd Color: </label>
             <input type="color" onchange="changeSecondary(this.value)" value="@Model.Colors[1].Hex" name="secondary" id="secondaryColor"><br />
-            <input type="button" id="try" value="Try" />
             <input type="submit" id="saveChanges" value="Save changes" />
         </form>
         @if (Model.Id != 0)
@@ -163,13 +162,13 @@
                         $(currentId).css("fill", primary);
                         $(currentId).removeClass("secondaryColor");
                         $(currentId).addClass("primaryColor");
-                        addAlter(currentId);
+                        //addAlter(currentId);
                     }
                     else {
                         $(currentId).css("fill", secondary);
                         $(currentId).removeClass("primaryColor");
                         $(currentId).addClass("secondaryColor");
-                        addAlter(currentId);
+                        //addAlter(currentId);
                     }
                 });
             }
@@ -227,12 +226,12 @@
                                 if (colorAsHex === secondary) {
                                     $(currentId).removeClass("secondaryColor");
                                     $(currentId).addClass("primaryColor");
-                                    addAlter(currentId);
+                                    //addAlter(currentId);
                                 }
                                 else {
                                     $(currentId).removeClass("primaryColor");
                                     $(currentId).addClass("secondaryColor");
-                                    addAlter(currentId);
+                                    //addAlter(currentId);
                                 }
                             });
                         }
@@ -266,7 +265,7 @@
 
                     $(currentId).removeClass("secondaryColor");
                     $(currentId).addClass("primaryColor");
-                    addAlter(currentId);
+                    //addAlter(currentId);
                     d3.select("#chosenRule").attr("value", chosenRule);   
 
                 }
@@ -279,7 +278,7 @@
 
                     $(currentId).removeClass("primaryColor");
                     $(currentId).addClass("secondaryColor");
-                    addAlter(currentId);
+                    //addAlter(currentId);
                     d3.select("#chosenRule").attr("value", chosenRule);   
                 }
                 changeRule();
@@ -299,13 +298,13 @@
                         $(currentId).css("fill", primary);
                         $(currentId).removeClass("secondaryColor");
                         $(currentId).addClass("primaryColor");
-                        addAlter(currentId);
+                        //addAlter(currentId);
                     }
                     else{
                         $(currentId).css("fill", secondary);
                         $(currentId).removeClass("primaryColor");
                         $(currentId).addClass("secondaryColor");
-                        addAlter(currentId);
+                        //addAlter(currentId);
                     }
                 });
             }
@@ -320,7 +319,7 @@
         $("#editForm").submit(function (event) {
             event.preventDefault();
             var model = {
-                allAlters: getAlters(),
+                //allAlters: getAlters(),
                 chosenRule: $("#chosenRule").val(),
                 colDim: $("#colDim").val(),
                 rowDim: $("#rowDim").val(),

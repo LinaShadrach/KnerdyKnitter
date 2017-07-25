@@ -21,7 +21,7 @@ namespace KnerdyKnitter.Models
         public int KnitterId { get; set; }
         public virtual Knitter Knitter { get; set; }
         public virtual List<Color> Colors { get; set; }
-        public virtual List<Alter> Alters { get; set; }
+        //public virtual List<Alter> Alters { get; set; }
         public virtual List<GarmentTag> GarmentTags { get; set; }
         public virtual List<Favorite> Favorites { get; set; }
         public virtual List<Comment> Comments { get; set; }
@@ -35,7 +35,7 @@ namespace KnerdyKnitter.Models
             CreationDate = DateTime.Now;
             Creation = new bool [100][];
             Colors = new List<Color>() { };
-            Alters = new List<Alter>() { };
+            //Alters = new List<Alter>() { };
         }
         public void MakeGarment(bool[] currentRow, int dimension)
         {
