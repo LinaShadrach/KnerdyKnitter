@@ -13,8 +13,8 @@ This project was generated with [.NET Core](https://www.microsoft.com/net/core#w
 * `git clone <https://github.com/LinaShadrach/KnerdyKnitter.NET>`
 
 ## Set-Up
-* build the project
- * 
+* Open the project with VS (2015 was used to create this project)
+* Right click on Solution in sidebar and select `Build Solution`
 
 ## Known Bugs
 
