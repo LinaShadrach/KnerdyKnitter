@@ -4,7 +4,10 @@
 ## Description
 _The main purpose of this app is to generate a 2-color scarf knitting pattern from cellular automata rules. Users are able to choose the rule, 2 colors, and dimensions and see the scarf change immediately. Users are able to save their creations and revisit them later by signing in with a username and password._
 
+#### Create From: 
 ![alt-text](https://github.com/LinaShadrach/KnerdyKnitter/blob/master/create-pattern-img.png)
+
+#### Scarf Close-up:
 ![alt-text](https://github.com/LinaShadrach/KnerdyKnitter/blob/master/scarf-img.png)
 
 ## Installation
